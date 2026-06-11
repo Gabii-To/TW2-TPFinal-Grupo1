@@ -1,11 +1,13 @@
 import {Router} from "express";
-import cors from "cors";
+import UsuarioRouter from "./usuario-router/usuario.router.js";
+import ProductoRouter from "./producto-router/producto.router.js";
 
 export class AppRoutes {
     static get routes():Router {
         const router = Router();
 
-        router.use("api/empleado");
+        router.use("/api/usuarios", UsuarioRouter)
+        router.use("/api/productos", ProductoRouter)
 
         return router;
     }
