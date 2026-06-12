@@ -23,11 +23,12 @@ CREATE TABLE Producto (
                                    REFERENCES Usuario(id)
 );
 
+#Password 1234 hasheado
 INSERT INTO Usuario (email, password, nombre, apellido, direccion)
 VALUES
-    ('juan@gmail.com', '123456', 'Juan', 'Perez', 'Av. Corrientes 1234'),
-    ('maria@gmail.com', '123456', 'Maria', 'Gomez', 'Av. Rivadavia 2500'),
-    ('carlos@gmail.com', '123456', 'Carlos', 'Lopez', 'San Martin 456');
+    ('juan@gmail.com', '$2b$10$P5j/SVqb8auccms0jjiHv.I3MZ2H3v6uO2n8.mh47Xdd8a15PQFLe', 'Juan', 'Perez', 'Av. Corrientes 1234'),
+    ('maria@gmail.com', '$2b$10$P5j/SVqb8auccms0jjiHv.I3MZ2H3v6uO2n8.mh47Xdd8a15PQFLe', 'Maria', 'Gomez', 'Av. Rivadavia 2500'),
+    ('carlos@gmail.com', '$2b$10$P5j/SVqb8auccms0jjiHv.I3MZ2H3v6uO2n8.mh47Xdd8a15PQFLe', 'Carlos', 'Lopez', 'San Martin 456');
 
 INSERT INTO Producto
 (nombre, descripcion, clasificacion, precio, usuario_id)

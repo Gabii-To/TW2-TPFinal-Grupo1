@@ -9,7 +9,7 @@ export class AppRoutes {
 
         router.use("/api/usuarios", UsuarioRouter)
         router.use("/api/productos", ProductoRouter)
-        router.use(LoginRouter)
+        router.use("/api/auth/login", LoginRouter)
 
         return router;
     }

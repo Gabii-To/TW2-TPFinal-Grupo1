@@ -1,10 +1,14 @@
 import type { Request, Response } from "express";
 import { prisma } from "../prisma.js";
+import bcrypt from "bcrypt";
 
 export class AuthController {
 
+
     public login = async (req: Request, res: Response) => {
 
+        const hash = await bcrypt.hash("1234", 10);
+        console.log(hash);
         try {
 
             const { email, password } = req.body;

@@ -5,7 +5,7 @@ import {Login} from './pages/login/login';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'productos',
+    redirectTo: 'login',
     pathMatch: 'full',
   },
   {

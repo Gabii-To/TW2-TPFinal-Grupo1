@@ -31,6 +31,7 @@ export class Login {
           },
           error: (err) => {
             console.error('Error de login', err);
+
           }
         });
     }
