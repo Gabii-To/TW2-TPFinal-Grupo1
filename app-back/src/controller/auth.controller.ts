@@ -7,8 +7,6 @@ export class AuthController {
 
     public login = async (req: Request, res: Response) => {
 
-        const hash = await bcrypt.hash("1234", 10);
-        console.log(hash);
         try {
 
             const { email, password } = req.body;
@@ -20,17 +18,20 @@ export class AuthController {
             });
 
             if (!usuario) {
+                console.log("Usuario no encontrado")
                 return res.status(404).json({
                     error: "Usuario no encontrado"
                 });
             }
 
-            if (usuario.password !== password) {
+            if (!await bcrypt.compare(password, usuario.password)) {
+                console.log("Contraseña incorrecta")
                 return res.status(401).json({
                     error: "Contraseña incorrecta"
                 });
             }
 
+            console.log("Login exitoso")
             return res.status(200).json({
                 mensaje: "Login exitoso",
                 usuario
