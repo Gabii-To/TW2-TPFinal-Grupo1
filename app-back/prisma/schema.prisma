@@ -1,12 +1,10 @@
 generator client {
-  provider = "prisma-client"
-  output   = "../src/prisma"
+  provider = "prisma-client-js"
+  // output   = "../src/prisma"
 }
 
 datasource db {
   provider = "mysql"
-  // url = env("DATABASE_URL")
-  //Descomentar la url en cada db pull, no lo dejo descomentado porque chilla el ide
 }
 
 model producto {
