@@ -1,20 +1,14 @@
 import {Component, signal} from '@angular/core';
-import {ProductoService} from '../../services/producto-service';
+import {ProductoService} from '../../../services/productos/producto-service';
+import {Producto} from '../interfaces/producto.interface';
 import {CurrencyPipe} from '@angular/common';
-
-export interface Producto {
-  id: number;
-  nombre: string;
-  descripcion: string;
-  clasificacion: string;
-  precio: number;
-  usuario_id: number;
-}
+import {TablaProductos} from '../components/tabla-productos';
 
 @Component({
   selector: 'app-producto-list',
   imports: [
-    CurrencyPipe
+    CurrencyPipe,
+    TablaProductos
   ],
   templateUrl: './producto-list.html',
   styleUrl: './producto-list.css',
