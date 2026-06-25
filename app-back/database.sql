@@ -1,5 +1,6 @@
-# CREATE DATABASE prismaDB;
-USE prismaDB;
+-- Active: 1782344989813@@127.0.0.1@3306@mysql
+# CREATE DATABASE prismadb;
+USE prismadb;
 
 CREATE TABLE Usuario (
                           id INT AUTO_INCREMENT PRIMARY KEY,
