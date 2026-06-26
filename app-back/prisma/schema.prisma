@@ -5,8 +5,16 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  // url = env("DATABASE_URL")
-  //Descomentar la url en cada db pull, no lo dejo descomentado porque chilla el ide
+  url      = env("DATABASE_URL")
+}
+
+model usuario {
+  id        Int    @id @default(autoincrement())
+  email     String @unique(map: "email") @db.VarChar(100)
+  password  String @db.VarChar(255)
+  nombre    String @db.VarChar(50)
+  apellido  String @db.VarChar(50)
+  direccion String @db.VarChar(150)
 }
 
 model producto {
@@ -18,13 +26,4 @@ model producto {
   usuario_id    Int
 
   @@index([usuario_id], map: "fk_producto_usuario")
-}
-
-model usuario {
-  id        Int    @id @default(autoincrement())
-  email     String @unique(map: "email") @db.VarChar(100)
-  password  String @db.VarChar(255)
-  nombre    String @db.VarChar(50)
-  apellido  String @db.VarChar(50)
-  direccion String @db.VarChar(150)
 }

@@ -1,6 +1,7 @@
 import {Component, signal} from '@angular/core';
 import {ProductoService} from '../../services/producto-service';
 import {CurrencyPipe} from '@angular/common';
+import { RouterLink } from "@angular/router";
 
 export interface Producto {
   id: number;
@@ -14,8 +15,9 @@ export interface Producto {
 @Component({
   selector: 'app-producto-list',
   imports: [
-    CurrencyPipe
-  ],
+    CurrencyPipe,
+    RouterLink
+],
   templateUrl: './producto-list.html',
   styleUrl: './producto-list.css',
 })
