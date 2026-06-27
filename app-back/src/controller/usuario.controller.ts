@@ -14,5 +14,5 @@ export class UsuarioController {
         } catch (error) {
             res.status(500).json({error: "No se encontraron usuarios."})
         }
-}
+    }
 }

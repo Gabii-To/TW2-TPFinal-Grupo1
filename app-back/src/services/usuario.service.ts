@@ -1,5 +1,6 @@
 import type { Usuario } from "../models/usuario.model.js";
 import type { UsuarioRepository } from "../repository/usuario.repository.js";
+import * as bcrypt from "bcrypt";
 
 export class UsuarioService {
     constructor(private usuarioRepository: UsuarioRepository) { }
@@ -50,7 +51,7 @@ export class UsuarioService {
 
         const usuario = await this.usuarioRepository.findUsuarioByEmail(email);
 
-        if (!usuario || usuario.password !== password) {
+        if (!usuario || !await bcrypt.compare(password, usuario.password)) {
             throw new Error("CredencialesInvalidas");
         }
 

@@ -1,0 +1,14 @@
+<div class="container mx-auto p-6">
+  <h1 class="text-3xl font-bold mb-6 text-gray-800">
+    Lista de Productos
+  </h1>
+
+  <div>
+    <button class="mt-3 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+      routerLink="/productos/crear">
+      Crear producto
+    </button>
+  </div>
+
+  <app-tabla-productos [productos]="productos()"></app-tabla-productos>
+</div>

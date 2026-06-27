@@ -1,33 +1,21 @@
 import type { Request, Response } from "express";
-import { prisma } from "../prisma.js";
-import bcrypt from "bcrypt";
+import { UsuarioService } from "../services/usuario.service.js";
+import { UsuarioRepository } from "../repository/usuario.repository.js";
 
 export class AuthController {
 
+    private usuarioRepository = new UsuarioRepository();
+    private usuarioService = new UsuarioService(this.usuarioRepository);
 
     public login = async (req: Request, res: Response) => {
-
         try {
-
             const { email, password } = req.body;
-
-            const usuario = await prisma.usuario.findFirst({
-                where: {
-                    email: email
-                }
-            });
+            const usuario = await this.usuarioService.signin(email, password);
 
             if (!usuario) {
                 console.log("Usuario no encontrado")
                 return res.status(404).json({
                     error: "Usuario no encontrado"
-                });
-            }
-
-            if (!await bcrypt.compare(password, usuario.password)) {
-                console.log("Contraseña incorrecta")
-                return res.status(401).json({
-                    error: "Contraseña incorrecta"
                 });
             }
 
@@ -38,19 +26,21 @@ export class AuthController {
             });
 
         } catch (error) {
+            if (error instanceof Error && error.message === "CredencialesInvalidas") {
+                return res.status(401).json({
+                    error: "Credenciales inválidas"
+                });
+            }
 
             return res.status(500).json({
                 error: "Error interno del servidor"
             });
-
         }
     };
 
     public logout = async (req: Request, res: Response) => {
-
         return res.status(200).json({
             mensaje: "Logout exitoso"
         });
-
     };
 }

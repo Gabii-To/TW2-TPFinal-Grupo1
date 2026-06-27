@@ -6,32 +6,28 @@
           <span class="fs-5">TP<span class="d-none d-sm-inline"> Taller</span></span>
         </a>
         <ul class="nav nav-pills flex-sm-column flex-row flex-nowrap flex-shrink-1 flex-sm-grow-0 flex-grow-1 mb-sm-auto mb-0 justify-content-center align-items-center align-items-sm-start" id="menu">
-          <!-- <li class="nav-item">
-            <a [routerLink]="['/productos']" class="nav-link px-sm-0 px-2">
-              <i class="fs-5 pi pi-home"></i><span class="ms-1 d-none d-sm-inline">Home</span>
-            </a>
-          </li> -->
           <li class="nav-item">
             <a [routerLink]="['/productos']" class="nav-link px-sm-0 px-2 text-white">
               <i class="fs-5 pi pi-shopping-bag"></i><span class="ms-1 d-none d-sm-inline">Productos</span>
             </a>
           </li>
-          <!-- <li class="nav-item">
-            <a [routerLink]="['/pedidos/detail-pedido']" class="nav-link px-sm-0 px-2">
-              <i class="fs-5 pi pi-shopping-cart"></i><span class="ms-1 d-none d-sm-inline">Pedido</span>
+          @if(authService.usuarioLogueado()){
+          <li class="nav-item">
+            <a [routerLink]="['/carrito']" class="nav-link px-sm-0 px-2 text-white">
+              <i class="fs-5 pi pi-shopping-cart"></i><span class="ms-1 d-none d-sm-inline">Carrito</span>
             </a>
-          </li> -->
+          <li class="nav-item">
+            <a [routerLink]="['/pedidos']" class="nav-link px-sm-0 px-2 text-white">
+              <i class="fs-5 pi pi-list"></i><span class="ms-1 d-none d-sm-inline">Pedidos</span>
+            </a>
+          </li>
+          }
           @if(!authService.usuarioLogueado()){
           <li class="nav-item">
             <a [routerLink]="['/login']" class="nav-link px-sm-0 px-2 text-white">
               <i class="fs-5 pi pi-sign-in"></i><span class="ms-1 d-none d-sm-inline">Iniciar sesión</span>
             </a>
           </li>
-          <!-- <li class="nav-item">
-            <a [routerLink]="['/auth/signup']" class="nav-link px-sm-0 px-2">
-              <i class="fs-5 pi pi-user-plus"></i><span class="ms-1 d-none d-sm-inline">Signup</span>
-            </a>
-          </li> -->
           }
         </ul>
         <div class="dropdown py-sm-4 mt-sm-auto ms-auto ms-sm-0 flex-shrink-1">
