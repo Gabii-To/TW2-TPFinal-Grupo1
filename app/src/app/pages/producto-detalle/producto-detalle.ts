@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { ProductoService } from '../../services/producto-service';
-import { Producto } from '../producto-list/producto-list';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Producto } from '../../models/producto.model';
 import { CurrencyPipe } from '@angular/common';
 
 @Component({

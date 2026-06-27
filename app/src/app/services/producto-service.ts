@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Producto} from '../pages/producto-list/producto-list';
+import { Producto } from '../models/producto.model';
 import { catchError, of, throwError } from 'rxjs';
 
 @Injectable({
@@ -30,7 +30,6 @@ export class ProductoService {
   }
 
   agregarProducto(producto: Producto) {
-    return this.http.post("http://localhost:3000/api/productos", producto);
+    return this.http.post("http://localhost:3000/api/productos/crear", producto);
   }
-
 }

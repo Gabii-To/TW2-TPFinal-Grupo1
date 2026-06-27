@@ -3,6 +3,13 @@
     Lista de Productos
   </h1>
 
+  <div>
+    <button class="mt-3 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+      routerLink="/productos/crear">
+      Crear producto
+    </button>
+  </div>
+
   <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
     @for (producto of productos(); track producto.id) {
       <div class="bg-white rounded-xl shadow-md p-5 border border-gray-200 hover:shadow-lg transition">
@@ -39,5 +46,3 @@
     }
   </div>
 </div>
-
-<p>producto-list works!</p>
