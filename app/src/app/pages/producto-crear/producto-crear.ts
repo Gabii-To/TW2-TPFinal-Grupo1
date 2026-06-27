@@ -25,13 +25,39 @@ export class ProductoCrear {
     usuario_id: 1
   };
 
+  formError = '';
+  submitting = false;
+
   guardar() {
+
+    this.formError = '';
+
+    if (
+      !this.producto.nombre ||
+      !this.producto.descripcion ||
+      !this.producto.clasificacion ||
+      !this.producto.precio
+    ) {
+      this.formError = 'Por favor completa todos los campos obligatorios';
+      return;
+    }
+
+    if (this.producto.precio <= 0) {
+      this.formError = 'El precio debe ser mayor a 0';
+      return;
+    }
+
+    this.submitting = true;
+
     this.productoService.agregarProducto(this.producto).subscribe({
       next: () => {
+        this.submitting = false;
         this.router.navigate(['/productos']);
       },
       error: (err) => {
-        console.error('Error creando producto:', err);
+        this.submitting = false;
+        this.formError = 'Error al crear el producto';
+        console.error(err);
       }
     });
   }
