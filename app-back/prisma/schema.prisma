@@ -1,11 +1,11 @@
 generator client {
-  provider = "prisma-client"
-  output   = "../src/prisma"
+  provider = "prisma-client-js"
+  // output   = "../src/prisma"
 }
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  // url      = env("DATABASE_URL")
 }
 
 model usuario {
@@ -15,6 +15,38 @@ model usuario {
   nombre    String @db.VarChar(50)
   apellido  String @db.VarChar(50)
   direccion String @db.VarChar(150)
+
+  pedidos   pedido[]
+  productos producto[]
+}
+
+model pedido {
+  id                  Int      @id @default(autoincrement())
+  usuario_id          Int
+  estado              String   @db.VarChar(50)
+  fecha_creacion      DateTime @default(now())
+  fecha_actualizacion DateTime @updatedAt
+  precio_total        Decimal  @db.Decimal(10, 2)
+
+  usuario usuario @relation(fields: [usuario_id], references: [id])
+  productos producto_pedido[]
+
+  @@index([usuario_id], map: "fk_pedido_usuario")
+}
+
+model producto_pedido {
+  id              Int     @id @default(autoincrement())
+  producto_id     Int
+  pedido_id       Int
+  precio_unitario Decimal @db.Decimal(10, 2)
+  cantidad        Int
+  subtotal        Decimal @db.Decimal(10, 2)
+
+  producto producto @relation(fields: [producto_id], references: [id])
+  pedido   pedido   @relation(fields: [pedido_id], references: [id])
+
+  @@index([producto_id], map: "fk_producto_pedido_producto")
+  @@index([pedido_id], map: "fk_producto_pedido_pedido")
 }
 
 model producto {
@@ -24,6 +56,9 @@ model producto {
   clasificacion String  @db.VarChar(50)
   precio        Decimal @db.Decimal(10, 2)
   usuario_id    Int
+
+  usuario usuario @relation(fields: [usuario_id], references: [id])
+  pedidos producto_pedido[]
 
   @@index([usuario_id], map: "fk_producto_usuario")
 }
