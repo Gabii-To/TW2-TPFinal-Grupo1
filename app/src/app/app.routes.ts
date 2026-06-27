@@ -1,19 +1,21 @@
 import { Routes } from '@angular/router';
-import {ProductoList} from './pages/producto-list/producto-list';
-import {Login} from './pages/login/login';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'productos',
     pathMatch: 'full',
   },
   {
-    path: 'productos',
-    component: ProductoList,
+    path: 'login',
+    loadChildren: () => import('./modules/auth/auth.routes').then(a => a.authRoutes)
   },
   {
-    path: 'login',
-    component: Login,
+    path: 'productos',
+    loadChildren: () => import('./modules/productos/productos.routes').then(p => p.productosRoutes)
+  },
+  {
+    path: '**',
+    redirectTo: ''
   }
 ];
