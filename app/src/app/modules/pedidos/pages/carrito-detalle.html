@@ -1,0 +1,13 @@
+<div class="container mx-auto p-6">
+  <h1 class="text-3xl font-bold mb-6 text-gray-800">
+    Carrito de Compras
+  </h1>
+
+  <app-info-pedido [pedido]="pedido()"></app-info-pedido>
+
+  <div class="flex justify-end mt-6">
+    <button class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded" (click)="finalizarCompra()">
+      Finalizar Compra
+    </button>
+  </div>
+</div>
