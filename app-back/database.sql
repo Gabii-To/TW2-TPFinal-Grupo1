@@ -1,4 +1,4 @@
-# CREATE DATABASE prismaDB;
+CREATE DATABASE prismaDB;
 USE prismaDB;
 
 CREATE TABLE Usuario (

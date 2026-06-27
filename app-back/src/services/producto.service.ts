@@ -12,4 +12,15 @@ export class ProductoService {
         console.log("[Back][ProductoService] obtenerProducto id:", id);
         return await this.productoRepository.findProductoById(id);
     }
+
+    async crearProducto(data: {
+        nombre: string;
+        descripcion: string;
+        clasificacion: string;
+        precio: number;
+        usuario_id: number;
+    }) {
+        console.log("[Back][ProductoService] crearProducto data:", data);
+        return await this.productoRepository.create(data);
+    }
 }

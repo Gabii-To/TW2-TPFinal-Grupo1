@@ -39,6 +39,13 @@ export class CarritoDetalle {
   }
 
   finalizarCompra() {
+    const usuario = this.authService.usuarioLogueado();
+
+    if (!usuario) {
+      this.router.navigate(['/login']);
+      return;
+    }
+
     this.pedidoService.finalizarCompra(this.pedido()).subscribe({
       next: () => {
         console.log("Compra finalizada:", this.pedido());
