@@ -1,7 +1,7 @@
 import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
-import { Usuario } from '../../modules/auth/interfaces/usuario.interface';
+import { SignupUsuario, Usuario } from '../../modules/auth/interfaces/usuario.interface';
 import { tap } from 'rxjs/internal/operators/tap';
 
 @Injectable({
@@ -13,6 +13,15 @@ export class AuthService {
 
   login(email: string, password: string) {
     return this.http.post(`${environment.API_URL}/auth/login`, {email, password}).pipe(
+      tap((res: any) => {
+        const usuario: Usuario = res.usuario;
+        this.guardarUsuario(usuario);
+      })
+    );
+  }
+
+  register(usuario: SignupUsuario) {
+    return this.http.post(`${environment.API_URL}/usuarios/register`, usuario).pipe(
       tap((res: any) => {
         const usuario: Usuario = res.usuario;
         this.guardarUsuario(usuario);

@@ -1,0 +1,1 @@
+{"version":3,"file":"producto.service.d.ts","sourceRoot":"","sources":["../../src/services/producto.service.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,kBAAkB,EAAE,MAAM,sCAAsC,CAAC;AAE/E,qBAAa,eAAe;IACZ,OAAO,CAAC,kBAAkB;gBAAlB,kBAAkB,EAAE,kBAAkB;IAEpD,gBAAgB;;;;;;;;IAKhB,eAAe,CAAC,EAAE,EAAE,MAAM;;;;;;;;CAInC"}

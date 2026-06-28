@@ -1,14 +1,11 @@
-import type { Usuario } from "../models/usuario.model.js";
-import type { UsuarioRepository } from "../repository/usuario.repository.js";
 import bcrypt from 'bcrypt';
-
-
 export class UsuarioService {
-    constructor(private usuarioRepository: UsuarioRepository) { }
-
-    async signup(usuario: Usuario) {
+    usuarioRepository;
+    constructor(usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
+    async signup(usuario) {
         const { email, password, nombre, apellido, direccion } = usuario;
-
         if (!email || typeof email !== "string") {
             throw new Error("El email es obligatorio");
         }
@@ -27,15 +24,12 @@ export class UsuarioService {
         if (!this.passwordValida(password)) {
             throw new Error("PasswordDebil");
         }
-
         const usuarioExistente = await this.usuarioRepository.findUsuarioByEmail(email);
-
         if (usuarioExistente) {
             throw new Error("EmailRepetido");
         }
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
-
         const usuarioCreado = await this.usuarioRepository.createUsuario({
             email,
             password: hashedPassword,
@@ -43,31 +37,25 @@ export class UsuarioService {
             apellido,
             direccion,
         });
-
         return this.ocultarPassword(usuarioCreado);
     }
-
-    async signin(email: string, password: string) {
+    async signin(email, password) {
         if (!email || !password) {
             throw new Error("EmailPasswordObligatorios");
         }
-
         const usuario = await this.usuarioRepository.findUsuarioByEmail(email);
-
         if (!usuario || !(await bcrypt.compare(password, usuario.password))) {
             throw new Error("CredencialesInvalidas");
         }
-
         return this.ocultarPassword(usuario);
     }
-
-    private passwordValida(password: string): boolean {
+    passwordValida(password) {
         const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/;
         return regex.test(password);
     }
-
-    private ocultarPassword(usuario: Usuario) {
+    ocultarPassword(usuario) {
         const { password, ...usuarioSinPassword } = usuario;
         return usuarioSinPassword;
     }
 }
+//# sourceMappingURL=usuario.service.js.map
