@@ -1,6 +1,9 @@
-import { Injectable, signal, inject } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
+import { Usuario } from '../../modules/auth/interfaces/usuario.interface';
+import { tap } from 'rxjs/operators';
+@Injectable({ providedIn: 'root' })
 import { SignupUsuario, Usuario } from '../../modules/auth/interfaces/usuario.interface';
 import { tap } from 'rxjs/internal/operators/tap';
 
@@ -8,16 +11,34 @@ import { tap } from 'rxjs/internal/operators/tap';
   providedIn: 'root',
 })
 export class AuthService {
-  usuarioLogueado = signal<Usuario | null>(this.obtenerUsuarioStorage());
+  usuarioLogueado = signal<Usuario | null>(null);
+  private ready = false;
   constructor(private http: HttpClient) {}
-
   login(email: string, password: string) {
-    return this.http.post(`${environment.API_URL}/auth/login`, {email, password}).pipe(
+    return this.http.post(`${environment.API_URL}/auth/login`, { email, password }).pipe(
       tap((res: any) => {
         const usuario: Usuario = res.usuario;
         this.guardarUsuario(usuario);
-      })
+      }),
     );
+  }
+
+  initAuth() {
+    const usuario = this.obtenerUsuarioStorage();
+    this.usuarioLogueado.set(usuario);
+    this.ready = true;
+  }
+
+  isReady(): boolean {
+    return this.ready;
+  }
+
+  estaLogueado(): boolean {
+    if (typeof localStorage === 'undefined') {
+      return false;
+    }
+
+    return localStorage.getItem('usuario') !== null;
   }
 
   register(usuario: SignupUsuario) {
@@ -41,11 +62,9 @@ export class AuthService {
 
   private obtenerUsuarioStorage(): Usuario | null {
     console.log('localStorage:', typeof localStorage);
-
     if (typeof localStorage === 'undefined') {
       return null;
     }
-
     const usuario = localStorage.getItem('usuario');
     return usuario ? JSON.parse(usuario) : null;
   }
