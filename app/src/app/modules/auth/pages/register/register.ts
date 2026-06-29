@@ -6,7 +6,6 @@ import { FormBuilder, FormGroup, ReactiveFormsModule,Validators } from '@angular
 
 @Component({
   selector: 'app-register',
-  standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './register.html',
   styleUrl: './register.css',
