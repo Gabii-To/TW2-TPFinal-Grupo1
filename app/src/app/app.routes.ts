@@ -23,6 +23,10 @@ export const routes: Routes = [
     loadChildren: () => import('./modules/pedidos/pedidos.routes').then(p => p.pedidosRoutes)
   },
   {
+    path: 'auth',
+    loadChildren: () => import('./modules/auth/auth.routes').then(a => a.authRoutes)
+  },
+  {
     path: '**',
     redirectTo: ''
   }

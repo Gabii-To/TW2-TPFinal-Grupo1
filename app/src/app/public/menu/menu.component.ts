@@ -2,10 +2,11 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { FooterComponent } from '../footer/footer.component';
 import { AuthService } from '../../services/auth/auth-service';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-menu',
-  imports: [FooterComponent, RouterLink, RouterOutlet],
+  imports: [FooterComponent, RouterLink, RouterOutlet, TitleCasePipe],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css'
 })
