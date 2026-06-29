@@ -22,7 +22,7 @@ export class Register {
    constructor() {
      this.registerForm= this.fb.group({
         email: ['', [Validators.required, Validators.email]],
-        password: ['', [Validators.required, Validators.minLength(8)]],
+        password: ['', [Validators.required, Validators.minLength(8)]],//
         nombre: ['',[Validators.required]],
         apellido: ['',[Validators.required]],
         direccion: ['', [Validators.required]]
@@ -32,13 +32,7 @@ export class Register {
    onSubmit(){
     if(this.registerForm.valid){
       const usuario: SignupUsuario = this.registerForm.value as SignupUsuario;
-/**      const usuario: SignupUsuario = {
-      email: this.registerForm.get('email')?.value,
-      password: this.registerForm.get('password')?.value,
-      nombre: this.registerForm.get('nombre')?.value,
-      apellido: this.registerForm.get('apellido')?.value,
-      direccion: this.registerForm.get('direccion')?.value
-    }*/ 
+      
     this.createUsuario(usuario);
     console.log(this.registerForm.value);
     }   

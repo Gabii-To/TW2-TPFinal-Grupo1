@@ -1,11 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
-import { Usuario } from '../../modules/auth/interfaces/usuario.interface';
-import { tap } from 'rxjs/operators';
-@Injectable({ providedIn: 'root' })
+import { tap } from 'rxjs';
 import { SignupUsuario, Usuario } from '../../modules/auth/interfaces/usuario.interface';
-import { tap } from 'rxjs/internal/operators/tap';
 
 @Injectable({
   providedIn: 'root',
