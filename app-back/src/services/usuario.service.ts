@@ -1,6 +1,7 @@
 import type { Usuario } from "../models/usuario.model.js";
 import type { UsuarioRepository } from "../repository/usuario.repository.js";
-import * as bcrypt from "bcrypt";
+import bcrypt from 'bcrypt';
+
 
 export class UsuarioService {
     constructor(private usuarioRepository: UsuarioRepository) { }
@@ -32,10 +33,12 @@ export class UsuarioService {
         if (usuarioExistente) {
             throw new Error("EmailRepetido");
         }
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
 
         const usuarioCreado = await this.usuarioRepository.createUsuario({
             email,
-            password,
+            password: hashedPassword,
             nombre,
             apellido,
             direccion,
@@ -51,7 +54,7 @@ export class UsuarioService {
 
         const usuario = await this.usuarioRepository.findUsuarioByEmail(email);
 
-        if (!usuario || !await bcrypt.compare(password, usuario.password)) {
+        if (!usuario || !(await bcrypt.compare(password, usuario.password))) {
             throw new Error("CredencialesInvalidas");
         }
 

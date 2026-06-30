@@ -1,7 +1,7 @@
-CREATE DATABASE prismaDB;
-USE prismaDB;
+# CREATE DATABASE prismadb;
+USE prismadb;
 
-CREATE TABLE Usuario (
+CREATE TABLE usuario (
                           id INT AUTO_INCREMENT PRIMARY KEY,
                           email VARCHAR(100) NOT NULL UNIQUE,
                           password VARCHAR(255) NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE Usuario (
                           direccion VARCHAR(150) NOT NULL
 );
 
-CREATE TABLE Producto (
+CREATE TABLE producto (
                            id INT AUTO_INCREMENT PRIMARY KEY,
                            nombre VARCHAR(100) NOT NULL,
                            descripcion TEXT NOT NULL,
@@ -24,13 +24,13 @@ CREATE TABLE Producto (
 );
 
 #Password 1234 hasheado
-INSERT INTO Usuario (email, password, nombre, apellido, direccion)
+INSERT INTO usuario (email, password, nombre, apellido, direccion)
 VALUES
     ('juan@gmail.com', '$2b$10$P5j/SVqb8auccms0jjiHv.I3MZ2H3v6uO2n8.mh47Xdd8a15PQFLe', 'Juan', 'Perez', 'Av. Corrientes 1234'),
     ('maria@gmail.com', '$2b$10$P5j/SVqb8auccms0jjiHv.I3MZ2H3v6uO2n8.mh47Xdd8a15PQFLe', 'Maria', 'Gomez', 'Av. Rivadavia 2500'),
     ('carlos@gmail.com', '$2b$10$P5j/SVqb8auccms0jjiHv.I3MZ2H3v6uO2n8.mh47Xdd8a15PQFLe', 'Carlos', 'Lopez', 'San Martin 456');
 
-INSERT INTO Producto
+INSERT INTO producto
 (nombre, descripcion, clasificacion, precio, usuario_id)
 VALUES
     (
