@@ -1,29 +1,3 @@
-/*
-  Warnings:
-
-  - You are about to drop the column `id_direccion` on the `usuario` table. All the data in the column will be lost.
-  - You are about to drop the `direccion` table. If the table is not empty, all the data it contains will be lost.
-  - A unique constraint covering the columns `[email]` on the table `usuario` will be added. If there are existing duplicate values, this will fail.
-  - Added the required column `direccion` to the `usuario` table without a default value. This is not possible if the table is not empty.
-
-*/
--- DropForeignKey
-ALTER TABLE `usuario` DROP FOREIGN KEY `id_direccion`;
-
--- DropIndex
-DROP INDEX `Usuario_id_direccion_key` ON `usuario`;
-
--- AlterTable
-ALTER TABLE `usuario` DROP COLUMN `id_direccion`,
-    ADD COLUMN `direccion` VARCHAR(150) NOT NULL,
-    MODIFY `nombre` VARCHAR(50) NOT NULL,
-    MODIFY `apellido` VARCHAR(50) NOT NULL,
-    MODIFY `email` VARCHAR(100) NOT NULL,
-    MODIFY `password` VARCHAR(255) NOT NULL;
-
--- DropTable
-DROP TABLE `direccion`;
-
 -- CreateTable
 CREATE TABLE `pedido` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
@@ -50,22 +24,6 @@ CREATE TABLE `producto_pedido` (
     INDEX `fk_producto_pedido_pedido`(`pedido_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `producto` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `nombre` VARCHAR(100) NOT NULL,
-    `descripcion` TEXT NOT NULL,
-    `clasificacion` VARCHAR(50) NOT NULL,
-    `precio` DECIMAL(10, 2) NOT NULL,
-    `usuario_id` INTEGER NOT NULL,
-
-    INDEX `fk_producto_usuario`(`usuario_id`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateIndex
-CREATE UNIQUE INDEX `email` ON `usuario`(`email`);
 
 -- AddForeignKey
 ALTER TABLE `pedido` ADD CONSTRAINT `pedido_usuario_id_fkey` FOREIGN KEY (`usuario_id`) REFERENCES `usuario`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
