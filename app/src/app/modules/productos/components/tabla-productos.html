@@ -1,0 +1,37 @@
+@if(productos().length === 0) {
+  <div class="text-center text-gray-500 mt-10">
+    <p class="text-lg">No hay productos disponibles.</p>
+  </div>
+} @else {
+  <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+  @for (producto of productos(); track producto.id) {
+    <div class="bg-white rounded-xl shadow-md p-5 border border-gray-200 hover:shadow-lg transition">
+      <div class="flex justify-between items-start mb-3">
+        <h2 class="text-xl font-semibold text-gray-800">
+          {{ producto.nombre }}
+        </h2>
+
+        <span class="bg-blue-100 text-blue-700 text-xs font-medium px-2 py-1 rounded-full">
+          {{ producto.clasificacion }}
+        </span>
+      </div>
+
+      <p class="text-gray-600 mb-4">
+        {{ producto.descripcion }}
+      </p>
+
+      <div class="flex justify-between items-center">
+        <span class="text-2xl font-bold text-green-600">
+          {{ producto.precio | currency }}
+        </span>
+
+        <span class="text-sm text-gray-500">
+          Usuario #{{ producto.usuario_id }}
+        </span>
+      </div>
+
+      <button class="mt-3 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition" [routerLink]="['/productos', producto.id]"> Ver detalle </button>
+    </div>
+  }
+  </div>
+}

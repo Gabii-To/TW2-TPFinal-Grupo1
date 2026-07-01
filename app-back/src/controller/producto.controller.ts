@@ -1,13 +1,15 @@
-import { ProductoRepository } from "../Repositorios/producto.repository.js";
+import { ProductoRepository } from "../repository/producto.repository.js";
 import type {Request, Response} from "express";
+import {ProductoService} from "../services/producto.service.js";
 
 export class ProductoController {
 
     private repository = new ProductoRepository();
+    private productoService = new ProductoService(this.repository);
 
     public getProductos = async (req: Request, res: Response) => {
         try {
-            const productos = await this.repository.findAll();
+            const productos = await this.productoService.obtenerProductos();
             res.status(200).json(productos);
         } catch {
             res.status(500).json({ error: "No se encontraron productos" });
@@ -22,12 +24,12 @@ export class ProductoController {
             return res.status(400).json({ error: "ID inválido" });
 
         try {
-            const producto = await this.repository.findById(id);
+            const producto = await this.productoService.obtenerProducto(id);
 
             if (!producto)
                 return res.status(404).json({ error: "Producto no encontrado" });
 
-            res.json(producto);
+            res.status(200).json(producto);
 
         } catch {
             res.status(500).json({ error: "Error al buscar producto" });
@@ -44,7 +46,6 @@ export class ProductoController {
                 usuario_id
             } = req.body;
 
-            // Basic validation (important)
             if (
                 !nombre ||
                 !descripcion ||
@@ -57,7 +58,7 @@ export class ProductoController {
                 });
             }
 
-            const producto = await this.repository.create({
+            const producto = await this.productoService.crearProducto({
                 nombre,
                 descripcion,
                 clasificacion,

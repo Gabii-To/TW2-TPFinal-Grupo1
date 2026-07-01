@@ -1,2 +1,64 @@
+# =========================
+# ROOT
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+.env
+.env.*
+!.env.example
+
+# =========================
+# FRONTEND (Angular /app)
+# =========================
+/app/node_modules/
+/app/dist/
+/app/out-tsc/
+/app/.angular/
+/app/.cache/
+/app/coverage/
+
+# =========================
+# BACKEND (Node + Prisma /app-back)
+# =========================
 /app-back/node_modules/
+/app-back/dist/
+/app-back/build/
+
+/app-back/prisma/migrations/
+/app-back/prisma/dev.db
+/app-back/*.db
+/app-back/*.sqlite
+
+# Prisma client cache
+/app-back/node_modules/.prisma/
+
+# =========================
+# LOGS
+# =========================
+logs/
+*.log
+
+# =========================
+# SYSTEM
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# VS CODE + IDEA
+# =========================
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
 /.idea/
+
+# =========================
+# TEST / COVERAGE
+# =========================
+coverage/

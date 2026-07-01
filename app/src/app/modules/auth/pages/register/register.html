@@ -1,0 +1,63 @@
+<div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+  <div class="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
+    <h1 class="text-3xl font-bold text-center text-slate-800 mb-6">
+      Registrarse
+    </h1>
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4">
+
+  <div class="space-y-4 mt-4">
+
+    <div class="space-y-2">
+        <label class="block text-sm font-medium text-slate-700 mb-1">Nombre *</label>
+        <input type="text" placeholder="Nombre" formControlName="nombre" 
+        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"> <br>
+          @if (registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched) {
+          <p class="text-red-500 text-sm mt-1">
+            Ingrese su nombre
+          </p>
+        } 
+  </div>
+    <div class="space-y-2">
+        <label class="block text-sm font-medium text-slate-700 mb-1">Apellido *</label>
+        <input type="text" placeholder="Apellido" formControlName="apellido"
+          class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"> <br>
+          @if (registerForm.get('apellido')?.invalid && registerForm.get('apellido')?.touched) {
+          <p class="text-red-500 text-sm mt-1">
+            Ingrese su apellido
+          </p>
+        } 
+  </div>
+    <div class="space-y-2">
+        <label class="block text-sm font-medium text-slate-700 mb-1">Correo Electrónico *</label> 
+        <input type="email" formControlName="email" placeholder="correo@ejemplo.com"
+          class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"><br>
+            @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+          <p class="text-red-500 text-sm mt-1">
+            Ingrese un email válido
+          </p>
+        }
+  </div>
+    <div class="space-y-2">
+        <label class="block text-sm font-medium text-slate-700 mb-1">Contraseña *</label>
+        <input type="password" placeholder="******" formControlName="password"
+          class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"><br>
+          @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+          <p class="text-red-500 text-sm mt-1">
+            La contraseña debe contener un minimo de 8 caracteres, al menos una letra mayúscula, una letra minúscula, un número y un caracter especial
+          </p>
+        }  
+  </div>
+    <div class="space-y-2">
+        <label class="block text-sm font-medium text-slate-700 mb-1">Dirección *</label>
+        <input type="text" placeholder="Calle 123" formControlName="direccion"
+          class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"><br>
+          @if (registerForm.get('direccion')?.invalid && registerForm.get('direccion')?.touched) {
+          <p class="text-red-500 text-sm mt-1">
+            La dirección es obligatoria
+          </p>
+        }  
+  </div>
+  </div>
+  <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition disabled:bg-slate-400" 
+  [disabled]="registerForm.invalid">Registrarse</button>
+</form>
