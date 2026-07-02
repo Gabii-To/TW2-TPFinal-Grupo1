@@ -9,7 +9,12 @@ export class ProductoRepository {
     async findProductoById(id) {
         console.log("[Back][ProductoRepository] findProductoById id:", id);
         return await prisma.producto.findUnique({
-            where: { id },
+            where: { id }
+        });
+    }
+    async create(data) {
+        return prisma.producto.create({
+            data
         });
     }
 }

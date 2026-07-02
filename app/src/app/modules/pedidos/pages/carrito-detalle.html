@@ -3,11 +3,32 @@
     Carrito de Compras
   </h1>
 
-  <app-info-pedido [pedido]="pedido()"></app-info-pedido>
+  @if (cargando()) {
+    <p class="text-gray-500">Cargando carrito...</p>
+  } @else if (pedido(); as carrito) {
+    <app-info-pedido
+      [pedido]="carrito"
+      [mostrarAccionesCarrito]="true"
+      (incrementarCantidad)="incrementarCantidad($event)"
+      (decrementarCantidad)="decrementarCantidad($event)"
+      (quitarProducto)="quitarProducto($event)">
+    </app-info-pedido>
 
-  <div class="flex justify-end mt-6">
-    <button class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded" (click)="finalizarCompra()">
-      Finalizar Compra
-    </button>
-  </div>
+    <div class="flex justify-end gap-3 mt-6">
+      <button
+        type="button"
+        class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded transition"
+        [disabled]="carrito.productos.length === 0"
+        (click)="vaciarCarrito()">
+        Vaciar carrito
+      </button>
+      <button
+        type="button"
+        class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition disabled:opacity-50"
+        [disabled]="carrito.productos.length === 0"
+        (click)="finalizarCompra()">
+        Finalizar Compra
+      </button>
+    </div>
+  }
 </div>

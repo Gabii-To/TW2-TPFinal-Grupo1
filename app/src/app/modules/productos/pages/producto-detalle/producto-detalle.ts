@@ -45,9 +45,13 @@ export class ProductoDetalle {
       return;
     }
 
-    this.productoService.agregarProdAlCarrito(producto).subscribe({
+    if (!producto.id) {
+      return;
+    }
+
+    this.productoService.agregarProdAlCarrito(usuario.id, producto.id, 1).subscribe({
       next: () => {
-        console.log('Producto agregado al carrito:', producto);
+        this.router.navigate(['/carrito']);
       },
       error: (err) => {
         console.error('Error al agregar el producto al carrito:', err);
