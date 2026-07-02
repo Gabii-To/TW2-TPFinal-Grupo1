@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
-import { UsuarioService } from '../../services/usuario-service';
+import { Component, signal } from '@angular/core';
+import { UsuarioService } from '../../../../services/usuario/usuario-service';
 import { FormsModule } from '@angular/forms';
+import { Usuario } from '../../../auth/interfaces/usuario.interface';
+import {Router} from '@angular/router';
+import {AuthService} from '../../../../services/auth/auth-service';
 
 @Component({
   selector: 'app-usuario-perfil',
@@ -9,39 +12,46 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './usuario-perfil.css',
 })
 export class UsuarioPerfil {
-  usuario: any = {
-    nombre: '',
-    apellido: '',
-    email: '',
-    direccion: ''
-  };
+
+  usuario = signal<Usuario | null>(null);
+
   passwordActual = '';
   passwordNuevo = '';
   confirmarPassword = '';
 
-  loading = true;
+  loading = signal(true);
 
-  constructor(private usuarioService: UsuarioService) {}
+  constructor(
+    private usuarioService: UsuarioService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    const user = this.usuarioService.getUsuarioLogueado();
+    const usuarioLogueado = this.authService.usuarioLogueado();
 
-    if (!user) return;
+    if (!usuarioLogueado) {
+      this.router.navigate(['/login']);
+      return;
+    }
 
-    this.usuarioService.obtenerUsuario(user.id).subscribe({
-      next: (data) => {
-        this.usuario = data;
-        this.loading = false;
+    this.usuarioService.obtenerUsuario(usuarioLogueado.id).subscribe({
+      next: (usuario) => {
+        this.usuario.set(usuario);
+        this.loading.set(false);
       },
-      error: () => {
-        this.loading = false;
+      error: (err) => {
+        console.error(err);
       }
     });
   }
 
   guardarCambios(): void {
+    const user = this.usuario();
 
-    this.usuarioService.editarUsuario(this.usuario.id, this.usuario)
+    if (!user) return;
+
+    this.usuarioService.editarUsuario(user.id, user)
       .subscribe({
         next: () => {
           alert("Perfil actualizado.");
@@ -50,28 +60,35 @@ export class UsuarioPerfil {
           console.error(err);
         }
       });
-
   }
 
   eliminarCuenta() {
+    const user = this.usuario();
+
+    if (!user) return;
 
     if (!confirm("¿Seguro que querés eliminar tu cuenta?")) {
       return;
     }
 
-    this.usuarioService.eliminarUsuario(this.usuario.id)
+    this.usuarioService.eliminarUsuario(user.id)
       .subscribe({
         next: () => {
           alert("Cuenta eliminada.");
+          this.authService.logout();
+
+          this.router.navigate(['/login']);
         },
         error: (err) => {
           console.error(err);
         }
       });
-
   }
 
   cambiarPassword(): void {
+    const user = this.usuario();
+
+    if (!user) return;
 
     if (this.passwordNuevo !== this.confirmarPassword) {
       alert("Las contraseñas no coinciden.");
@@ -80,14 +97,13 @@ export class UsuarioPerfil {
 
     this.usuarioService
       .cambiarPassword(
-        this.usuario.id,
+        user.id,
         this.passwordActual,
         this.passwordNuevo
       )
       .subscribe({
         next: (respuesta: any) => {
-
-          alert(respuesta.mensaje);
+          alert(respuesta.message);
 
           this.passwordActual = '';
           this.passwordNuevo = '';
@@ -99,6 +115,5 @@ export class UsuarioPerfil {
           alert(error.error.error);
         }
       });
-
   }
 }

@@ -38,8 +38,6 @@ export class AuthController {
         }
     };
 
-    //register, cambiar password
-
     public logout = async (req: Request, res: Response) => {
         return res.status(200).json({
             mensaje: "Logout exitoso"

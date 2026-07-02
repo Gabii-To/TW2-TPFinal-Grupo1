@@ -35,7 +35,7 @@
             <a [routerLink]="['/pedidos']" class="nav-link px-sm-0 px-2 text-white">
               <i class="fs-5 pi pi-list"></i><span class="ms-1 d-none d-sm-inline">Pedidos</span>
             </a>
-          </li> 
+          </li>
           }
           @if (!authService.estaLogueado()) {
             <li class="nav-item">
@@ -48,7 +48,7 @@
             <a [routerLink]="['/auth/register']" class="nav-link px-sm-0 px-2">
               <i class="fs-5 pi pi-user-plus"></i><span class="ms-1 d-none d-sm-inline">Registrarse</span>
             </a>
-          </li> 
+          </li>
           }
         </ul>
         <div class="dropdown py-sm-4 mt-sm-auto ms-auto ms-sm-0 shrink">
@@ -69,6 +69,10 @@
               aria-labelledby="dropdownUser1"
             >
               <li>
+                <button class="dropdown-item" type="button"
+                        routerLink="/usuario">
+                Mi Perfil
+                </button>
                 <button class="dropdown-item" type="button" (click)="cerrarSesion()">
                   Cerrar Sesión
                 </button>
