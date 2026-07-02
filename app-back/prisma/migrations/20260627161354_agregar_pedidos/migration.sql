@@ -12,6 +12,23 @@ CREATE TABLE `pedido` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `producto` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `nombre` VARCHAR(100) NOT NULL,
+    `descripcion` TEXT NOT NULL,
+    `clasificacion` VARCHAR(50) NOT NULL,
+    `precio` DECIMAL(10, 2) NOT NULL,
+    `usuario_id` INTEGER NOT NULL,
+
+    INDEX `fk_producto_usuario`(`usuario_id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateIndex
+CREATE UNIQUE INDEX `email` ON `usuario`(`email`);
+
+
+-- CreateTable
 CREATE TABLE `producto_pedido` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `producto_id` INTEGER NOT NULL,

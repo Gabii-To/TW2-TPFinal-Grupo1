@@ -1,5 +1,5 @@
 import { prisma } from '../prisma.js'
-import { EstadoPedido } from '@prisma/client';
+import { EstadoPedido, type EstadoPedidoValue } from '../models/estado-pedido.model.js';
 
 export class PedidoRepository {
 
@@ -35,12 +35,20 @@ export class PedidoRepository {
         });
     }
 
-    async actualizarEstado(id: number, estado: EstadoPedido) {
-        return prisma.pedido.update({ where: { id }, data: { estado } });
+    async actualizarEstado(id: number, estado: EstadoPedidoValue) {
+        return prisma.pedido.update({
+            where: { id },
+            data: { estado },
+            include: { productos: { include: { producto: true } } },
+        });
     }
 
     async actualizarTotal(id: number, total: number) {
-        return prisma.pedido.update({ where: { id }, data: { precio_total: total } });
+        return prisma.pedido.update({
+            where: { id },
+            data: { precio_total: total },
+            include: { productos: { include: { producto: true } } },
+        });
     }
 
     // --- items del pedido/carrito ---

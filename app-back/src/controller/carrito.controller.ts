@@ -30,7 +30,7 @@ export class CarritoController {
             const usuarioId = Number(req.query.usuarioId)
             const { productoId, cantidad } = req.body;
 
-            if (!productoId || !cantidad || cantidad <= 0) {
+            if (!usuarioId || !productoId || !cantidad || cantidad <= 0) {
                 res.status(400).json({ mensaje: 'productoId y cantidad >0 son requeridos' });
                 return;
             }
@@ -42,6 +42,24 @@ export class CarritoController {
         }
     }
 
+    actualizarCantidadProducto = async (req: Request, res: Response) => {
+        try {
+            //   const usuarioId = req.usuario!.id;
+            const usuarioId = Number(req.query.usuarioId)
+            const productoId = Number(req.params.productoId);
+            const { cantidad } = req.body;
+
+            if (!usuarioId || !productoId || !cantidad || cantidad <= 0) {
+                res.status(400).json({ mensaje: 'usuarioId, productoId y cantidad >0 son requeridos' });
+                return;
+            }
+
+            const carrito = await pedidoService.actualizarCantidadProducto(usuarioId, productoId, Number(cantidad));
+            res.status(200).json(carrito);
+        } catch (error: any) {
+            res.status(400).json({ mensaje: error.message });
+        }
+    }
     quitarProductoDelCarrito = async (req: Request, res: Response) => {
         try {
             //   const usuarioId = req.usuario!.id;

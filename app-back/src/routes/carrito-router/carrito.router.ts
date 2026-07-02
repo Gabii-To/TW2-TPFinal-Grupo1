@@ -8,6 +8,7 @@ const carritoController = new CarritoController();
 
 carritoRouter.get('/', carritoController.verCarrito);
 carritoRouter.post('/items', carritoController.agregarProductoAlCarrito);
+carritoRouter.patch('/items/:productoId', carritoController.actualizarCantidadProducto);
 carritoRouter.delete('/items/:productoId', carritoController.quitarProductoDelCarrito);
 carritoRouter.delete('/', carritoController.vaciarCarrito);
 carritoRouter.post('/confirmar', carritoController.confirmarPedido);

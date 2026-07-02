@@ -1,6 +1,6 @@
 import { PedidoRepository } from '../repository/pedido.repository.js';
 import { ProductoService } from './producto.service.js';
-import { EstadoPedido } from '@prisma/client';
+import { EstadoPedido } from '../models/estado-pedido.model.js';
 
 export class PedidoService {
 
@@ -53,6 +53,26 @@ export class PedidoService {
         return this.recalcularTotal(carrito.id);
     }
 
+    async actualizarCantidadProducto(usuarioId: number, productoId: number, cantidad: number) {
+        if (cantidad <= 0) throw new Error('La cantidad debe ser mayor a 0');
+
+        const carrito = await this.pedidoRepository.buscarCarritoActivo(usuarioId);
+        if (!carrito) throw new Error('No existe un carrito activo');
+
+        const producto = await this.productoService.obtenerProducto(productoId);
+        if (!producto) throw new Error('Producto no encontrado');
+
+        const itemExistente = await this.pedidoRepository.buscarItem(carrito.id, productoId);
+        if (!itemExistente) throw new Error('El producto no existe en el carrito');
+
+        await this.pedidoRepository.actualizarCantidadItem(
+            itemExistente.id,
+            cantidad,
+            Number(producto.precio)
+        );
+
+        return this.recalcularTotal(carrito.id);
+    }
     async vaciarCarrito(usuarioId: number) {
         const carrito = await this.pedidoRepository.buscarCarritoActivo(usuarioId);
         if (!carrito) return;
