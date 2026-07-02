@@ -40,4 +40,29 @@ public createUsuario = async (req: Request, res: Response) => {
         res.status(400).json({ error: error.message || "Error interno" });
     }
 }
+
+public recuperarClave = async (req: Request, res: Response) => {
+    try {
+        const {email} = req.body;
+        const resultado = await this.usuarioService.enlaceRecuperarClave(email);
+
+        res.status(200).json(resultado);
+
+    } catch (error: any) {
+        if (error.message === "UsuarioNoEncontrado") {
+            return res.status(404).json({ error: "No existe ningún usuario registrado con este correo." });
+        }
+        res.status(400).json({ error: error.message || "Error interno" });
+    }
+    }
+
+    public renovarClave = async (req: Request, res: Response) => {
+        try {
+            const { token, password } = req.body;
+            const resultado = await this.usuarioService.renovarClaveConToken(token, password);
+            return res.status(200).json(resultado);
+        } catch (error: any) {
+           return res.status(400).json({ error: error.message || "Error interno" });
+        }
+    }
 }

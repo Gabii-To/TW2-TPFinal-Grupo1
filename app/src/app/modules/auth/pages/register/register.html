@@ -60,4 +60,9 @@
   </div>
   <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition disabled:bg-slate-400" 
   [disabled]="registerForm.invalid">Registrarse</button>
+      <div class="text-center mt-1">
+        <p class="text-muted small mt-0 mb-0"> Ya tenés cuenta?
+          <a [routerLink]="['/login']" class="text-primary fw-bold text-decoration-none ms-1-custom">Inicia sesión</a>
+        </p>
+      </div>
 </form>

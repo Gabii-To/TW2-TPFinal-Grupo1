@@ -18,6 +18,20 @@ model usuario {
 
   pedidos   pedido[]
   productos producto[]
+  tokens_recuperacion token_recuperacion[] 
+}
+
+model token_recuperacion {
+  id         Int      @id @default(autoincrement())
+  usuario_id Int
+  token      String   @unique @db.VarChar(255)
+  creado_en  DateTime @default(now())
+  expira_en  DateTime
+  usado      Boolean  @default(false)
+
+  usuario    usuario  @relation(fields: [usuario_id], references: [id], onDelete: Cascade)
+
+  @@index([usuario_id], map: "fk_token_usuario")
 }
 
 model pedido {

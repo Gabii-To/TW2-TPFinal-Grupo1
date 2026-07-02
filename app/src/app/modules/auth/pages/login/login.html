@@ -34,10 +34,14 @@
       </div>
 
       <div class="d-grid gap-2 mt-1/2">
+        <div class="text-right mt-2">
+    <a [routerLink]="['/auth/recuperar-clave']" class="text-sm text-blue-600 hover:underline">
+       ¿Olvidaste tu contraseña? </a>
+    </div>
         <button
           type="submit"
           [disabled]="loginForm.invalid"
-          class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition disabled:bg-slate-400"
+          class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition disabled:bg-slate-400 pointer"
         >
           Ingresar
         </button>
