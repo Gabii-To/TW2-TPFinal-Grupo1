@@ -1,8 +1,7 @@
-<div class="container mx-auto p-6">
-  <h1 class="text-3xl font-bold mb-6 text-gray-800">
-    Carrito de Compras
-  </h1>
+<div class="page-container">
+  <h1 class="page-title">Carrito de Compras</h1>
 
+<<<<<<< Updated upstream
   <app-info-pedido [pedido]="pedido()"></app-info-pedido>
 
   <div class="flex justify-end mt-6">
@@ -10,4 +9,35 @@
       Finalizar Compra
     </button>
   </div>
+=======
+  @if (cargando()) {
+    <div class="flex justify-center py-12">
+      <p-progress-spinner ariaLabel="Cargando carrito" />
+    </div>
+  } @else if (pedido(); as carrito) {
+    <app-info-pedido
+      [pedido]="carrito"
+      [mostrarAccionesCarrito]="true"
+      (incrementarCantidad)="incrementarCantidad($event)"
+      (decrementarCantidad)="decrementarCantidad($event)"
+      (quitarProducto)="quitarProducto($event)"
+    />
+
+    <div class="action-bar">
+      <p-button
+        label="Vaciar carrito"
+        icon="pi pi-trash"
+        severity="secondary"
+        [disabled]="carrito.productos.length === 0"
+        (onClick)="vaciarCarrito()"
+      />
+      <p-button
+        label="Finalizar Compra"
+        icon="pi pi-check"
+        [disabled]="carrito.productos.length === 0"
+        (onClick)="finalizarCompra()"
+      />
+    </div>
+  }
+>>>>>>> Stashed changes
 </div>

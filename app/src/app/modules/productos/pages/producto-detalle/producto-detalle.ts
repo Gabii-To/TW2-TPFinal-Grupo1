@@ -4,30 +4,29 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Producto } from '../../interfaces/producto.interface';
 import { CurrencyPipe } from '@angular/common';
 import { AuthService } from '../../../../services/auth/auth-service';
+import { Card } from 'primeng/card';
+import { Tag } from 'primeng/tag';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'app-producto-detalle',
   templateUrl: './producto-detalle.html',
-  imports: [
-    CurrencyPipe,
-    RouterLink
-  ]
+  imports: [CurrencyPipe, RouterLink, Card, Tag, Button],
 })
 export class ProductoDetalle {
-
   producto = signal<Producto | null>(null);
 
   constructor(
     private route: ActivatedRoute,
     private productoService: ProductoService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.productoService.verProducto(id).subscribe(producto => {
+    this.productoService.verProducto(id).subscribe((producto) => {
       if (!producto) {
         this.router.navigate(['/productos']);
         return;
@@ -51,7 +50,7 @@ export class ProductoDetalle {
       },
       error: (err) => {
         console.error('Error al agregar el producto al carrito:', err);
-      }
+      },
     });
   }
 }

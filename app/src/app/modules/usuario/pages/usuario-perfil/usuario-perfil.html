@@ -1,0 +1,99 @@
+<div class="page-container">
+  <h1 class="page-title">Mi Perfil</h1>
+
+  @if (loading()) {
+    <div class="flex justify-center py-12">
+      <p-progress-spinner ariaLabel="Cargando perfil" />
+    </div>
+  } @else if (usuario(); as u) {
+    <p-card header="Datos personales" styleClass="mb-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="field mb-0">
+          <label for="nombre">Nombre</label>
+          <input pInputText id="nombre" class="w-full" [(ngModel)]="u.nombre" />
+        </div>
+
+        <div class="field mb-0">
+          <label for="apellido">Apellido</label>
+          <input pInputText id="apellido" class="w-full" [(ngModel)]="u.apellido" />
+        </div>
+
+        <div class="field mb-0">
+          <label for="email">Email</label>
+          <input pInputText id="email" type="email" class="w-full" [(ngModel)]="u.email" />
+        </div>
+
+        <div class="field mb-0">
+          <label for="direccion">Dirección</label>
+          <input pInputText id="direccion" class="w-full" [(ngModel)]="u.direccion" />
+        </div>
+      </div>
+
+      <ng-template #footer>
+        <div class="flex justify-between gap-3 flex-wrap">
+          <p-button
+            label="Eliminar cuenta"
+            icon="pi pi-trash"
+            severity="danger"
+            (onClick)="eliminarCuenta()"
+          />
+          <p-button
+            label="Guardar cambios"
+            icon="pi pi-check"
+            (onClick)="guardarCambios()"
+          />
+        </div>
+      </ng-template>
+    </p-card>
+
+    <p-card header="Seguridad">
+      <div class="grid grid-cols-1 gap-4">
+        <div class="field mb-0">
+          <label for="passwordActual">Contraseña actual</label>
+          <p-password
+            inputId="passwordActual"
+            [(ngModel)]="passwordActual"
+            [feedback]="false"
+            [toggleMask]="true"
+            styleClass="w-full"
+            inputStyleClass="w-full"
+          />
+        </div>
+
+        <div class="field mb-0">
+          <label for="passwordNuevo">Nueva contraseña</label>
+          <p-password
+            inputId="passwordNuevo"
+            [(ngModel)]="passwordNuevo"
+            [toggleMask]="true"
+            styleClass="w-full"
+            inputStyleClass="w-full"
+          />
+        </div>
+
+        <div class="field mb-0">
+          <label for="confirmarPassword">Confirmar contraseña</label>
+          <p-password
+            inputId="confirmarPassword"
+            [(ngModel)]="confirmarPassword"
+            [feedback]="false"
+            [toggleMask]="true"
+            styleClass="w-full"
+            inputStyleClass="w-full"
+          />
+        </div>
+      </div>
+
+      <ng-template #footer>
+        <div class="flex justify-end">
+          <p-button
+            label="Cambiar contraseña"
+            icon="pi pi-lock"
+            severity="success"
+            (onClick)="cambiarPassword()"
+          />
+        </div>
+      </ng-template>
+    </p-card>
+  }
+</div>

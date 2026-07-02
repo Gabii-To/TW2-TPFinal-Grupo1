@@ -3,20 +3,37 @@ import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ProductoService } from '../../../../services/productos/producto-service';
 import { AuthService } from '../../../../services/auth/auth-service';
+import { Card } from 'primeng/card';
+import { Button } from 'primeng/button';
+import { InputText } from 'primeng/inputtext';
+import { Textarea } from 'primeng/textarea';
+import { Select } from 'primeng/select';
+import { InputNumber } from 'primeng/inputnumber';
+import { Message } from 'primeng/message';
 
 @Component({
   selector: 'app-producto-crear',
   standalone: true,
-  imports: [RouterLink, FormsModule],
+  imports: [
+    RouterLink,
+    FormsModule,
+    Card,
+    Button,
+    InputText,
+    Textarea,
+    Select,
+    InputNumber,
+    Message,
+  ],
   templateUrl: './producto-crear.html',
-  styleUrl: './producto-crear.css',
 })
 export class ProductoCrear {
+  categorias = ['Tecnología', 'Hogar', 'Deportes', 'Ropa', 'Otros'];
 
   constructor(
     private productoService: ProductoService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   ngOnInit() {
@@ -33,7 +50,7 @@ export class ProductoCrear {
     descripcion: '',
     clasificacion: '',
     precio: 0,
-    usuario_id: 1
+    usuario_id: 1,
   };
 
   formError = '';
@@ -75,7 +92,7 @@ export class ProductoCrear {
         this.submitting = false;
         this.formError = 'Error al crear el producto';
         console.error(err);
-      }
+      },
     });
   }
 }

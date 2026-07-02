@@ -1,9 +1,12 @@
-<div class="bg-white rounded-xl shadow-md p-5 border border-gray-200 hover:shadow-lg transition mb-4">
-  <div class="flex justify-between items-start mb-3">
-    <h2 class="text-xl font-semibold text-gray-800">
-      Pedido #{{ pedido().id }}
-    </h2>
+<p-card styleClass="mb-4">
+  <ng-template #title>
+    <div class="flex align-items-center justify-between gap-3 flex-wrap">
+      <span>Pedido #{{ pedido().id }}</span>
+      <p-tag [value]="pedido().estado" [severity]="estadoSeverity()" />
+    </div>
+  </ng-template>
 
+<<<<<<< Updated upstream
     <span class="bg-blue-100 text-blue-700 text-xs font-medium px-2 py-1 rounded-full">
       {{ pedido().estado }}
     </span>
@@ -41,3 +44,92 @@
     }
   </div>
 </div>
+=======
+  <ng-template #subtitle>
+    Fecha: {{ pedido().fecha_creacion | date: 'short' }}
+  </ng-template>
+
+  @if (pedido().productos.length === 0) {
+    <div class="empty-state py-8">
+      <i class="pi pi-shopping-cart"></i>
+      <p>No hay productos para mostrar.</p>
+    </div>
+  } @else {
+    <p-table [value]="pedido().productos" styleClass="p-datatable-sm">
+      <ng-template #header>
+        <tr>
+          <th>Producto</th>
+          <th>Precio unitario</th>
+          <th>Cantidad</th>
+          <th>Total</th>
+          @if (mostrarAccionesCarrito()) {
+            <th style="width: 10rem">Acciones</th>
+          }
+        </tr>
+      </ng-template>
+      <ng-template #body let-producto>
+        <tr>
+          <td>
+            <span class="font-semibold">{{ producto.nombre }}</span>
+          </td>
+          <td>{{ producto.precio | currency }}</td>
+          <td>
+            <p-tag [value]="producto.cantidad.toString()" severity="success" />
+          </td>
+          <td>{{ producto.subtotal | currency }}</td>
+          @if (mostrarAccionesCarrito()) {
+            <td>
+              <div class="flex gap-1">
+                <p-button
+                  icon="pi pi-minus"
+                  severity="secondary"
+                  size="small"
+                  [rounded]="true"
+                  (onClick)="decrementarCantidad.emit(producto)"
+                />
+                <p-button
+                  icon="pi pi-plus"
+                  severity="secondary"
+                  size="small"
+                  [rounded]="true"
+                  (onClick)="incrementarCantidad.emit(producto)"
+                />
+                <p-button
+                  icon="pi pi-trash"
+                  severity="danger"
+                  size="small"
+                  [rounded]="true"
+                  [text]="true"
+                  (onClick)="quitarProducto.emit(producto)"
+                />
+              </div>
+            </td>
+          }
+        </tr>
+      </ng-template>
+    </p-table>
+  }
+
+  <div class="pedido-total">
+    <span>Total:</span>
+    <span class="text-primary">{{ pedido().precio_total | currency }}</span>
+  </div>
+
+  @if (mostrarAccionesPedido() && pedido().estado === EstadoPedido.PENDIENTE) {
+    <div class="action-bar">
+      <p-button
+        label="Pagar"
+        icon="pi pi-credit-card"
+        severity="success"
+        (onClick)="pagarPedido.emit(pedido())"
+      />
+      <p-button
+        label="Cancelar"
+        icon="pi pi-times"
+        severity="danger"
+        (onClick)="cancelarPedido.emit(pedido())"
+      />
+    </div>
+  }
+</p-card>
+>>>>>>> Stashed changes

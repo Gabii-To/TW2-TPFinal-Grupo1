@@ -1,15 +1,21 @@
-<div class="container-fluid overflow-hidden">
-  <div class="row vh-100 overflow-auto">
-    <div class="col-12 col-sm-3 col-xl-2 px-sm-2 px-0 bg-dark d-flex sticky-top">
-      <div
-        class="d-flex flex-sm-column flex-row grow align-items-center align-items-sm-start px-3 pt-2 text-white"
-      >
+<div class="layout-wrapper">
+  <aside class="layout-sidebar">
+    <a routerLink="/productos" class="sidebar-brand">
+      <i class="pi pi-shop"></i>
+      <span>TP Taller</span>
+    </a>
+
+    <nav class="sidebar-nav">
+      @for (item of menuItems(); track item.label) {
         <a
-          [routerLink]="['/']"
-          class="d-flex align-items-center pb-sm-3 mb-md-0 me-md-auto text-white text-decoration-none"
+          [routerLink]="item.routerLink"
+          routerLinkActive="active"
+          class="sidebar-link"
         >
-          <span class="fs-5">TP<span class="d-none d-sm-inline"> Taller</span></span>
+          <i [class]="item.icon"></i>
+          <span>{{ item.label }}</span>
         </a>
+<<<<<<< Updated upstream
         <ul
           class="nav nav-pills flex-sm-column flex-row flex-nowrap shrink flex-sm-grow-0 grow mb-sm-auto mb-0 justify-content-center align-items-center align-items-sm-start"
           id="menu"
@@ -76,17 +82,33 @@
             </ul>
           }
         </div>
+=======
+      }
+    </nav>
+
+    @if (authService.estaLogueado()) {
+      <div class="sidebar-user">
+        <p-divider />
+        <p-button
+          [label]="(authService.usuarioLogueado()?.nombre ?? '') | titlecase"
+          icon="pi pi-user"
+          severity="secondary"
+          [text]="true"
+          styleClass="user-menu-btn w-full"
+          (onClick)="toggleUserMenu($event, userMenuRef)"
+        />
+        <p-menu #userMenuRef [model]="userMenuItems()" [popup]="true" />
+>>>>>>> Stashed changes
       </div>
-    </div>
-    <div class="col d-flex flex-column h-sm-100">
-      <main class="row overflow-auto">
-        <div class="col pt-4">
-          <router-outlet></router-outlet>
-        </div>
-      </main>
-      <div class="row bg-light py-4 mt-auto">
-        <app-footer></app-footer>
-      </div>
-    </div>
+    }
+  </aside>
+
+  <div class="layout-main">
+    <main class="layout-content">
+      <router-outlet />
+    </main>
+    <footer class="layout-footer">
+      <app-footer />
+    </footer>
   </div>
 </div>

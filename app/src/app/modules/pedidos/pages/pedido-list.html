@@ -1,9 +1,28 @@
-<div class="container mx-auto p-6">
-  <h1 class="text-3xl font-bold mb-6 text-gray-800">
-    Pedidos
-  </h1>
+<div class="page-container">
+  <h1 class="page-title">Pedidos</h1>
 
+<<<<<<< Updated upstream
   @for (pedido of pedidos(); track pedido.id) {
     <app-info-pedido [pedido]="pedido"></app-info-pedido>
+=======
+  @if (cargando()) {
+    <div class="flex justify-center py-12">
+      <p-progress-spinner ariaLabel="Cargando pedidos" />
+    </div>
+  } @else if (pedidos().length === 0) {
+    <div class="empty-state">
+      <i class="pi pi-list"></i>
+      <p>No hay pedidos para mostrar.</p>
+    </div>
+  } @else {
+    @for (pedido of pedidos(); track pedido.id) {
+      <app-info-pedido
+        [pedido]="pedido"
+        [mostrarAccionesPedido]="true"
+        (pagarPedido)="pagarPedido($event)"
+        (cancelarPedido)="cancelarPedido($event)"
+      />
+    }
+>>>>>>> Stashed changes
   }
 </div>
