@@ -2,16 +2,24 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../services/auth/auth-service';
+import { Card } from 'primeng/card';
+import { Button } from 'primeng/button';
+import { Password } from 'primeng/password';
+import { InputText } from 'primeng/inputtext';
+import { Divider } from 'primeng/divider';
+import { Message } from 'primeng/message';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, RouterLink],
+  standalone: true,
+  imports: [ReactiveFormsModule, RouterLink, Card, Button, Password, InputText, Divider, Message],
   templateUrl: './login.html',
-  styleUrl: './login.css',
 })
 export class Login {
   loginForm: FormGroup;
   returnUrl!: string;
+  formError = '';
+  submitting = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -30,18 +38,28 @@ export class Login {
   }
 
   onSubmit() {
-    if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
+    this.formError = '';
 
-      this.authService.login(email, password).subscribe({
-        next: (response) => {
-          console.log('Login exitoso', response);
-          this.router.navigateByUrl(this.returnUrl || '/');
-        },
-        error: (err) => {
-          console.error('Error de login', err);
-        },
-      });
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      this.formError = 'Completá el email y la contraseña para iniciar sesión';
+      return;
     }
+
+    const { email, password } = this.loginForm.value;
+
+    this.submitting = true;
+
+    this.authService.login(email, password).subscribe({
+      next: () => {
+        this.submitting = false;
+        this.router.navigateByUrl(this.returnUrl || '/');
+      },
+      error: (err) => {
+        this.submitting = false;
+        this.formError = err?.error?.error || 'No se pudo iniciar sesión';
+        console.error('Error de login', err);
+      },
+    });
   }
 }

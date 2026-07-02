@@ -1,76 +1,48 @@
 @if (producto(); as p) {
-  <div class="container mx-auto p-6 max-w-3xl">
-
-    <div class="bg-white rounded-xl shadow-lg border border-gray-200 p-8">
-
-      <div class="flex justify-between items-start mb-6">
-        <div>
-          <h1 class="text-3xl font-bold text-gray-800">
-            {{ p.nombre }}
-          </h1>
-
-          <p class="text-gray-500 mt-1">
-            Producto #{{ p.id }}
-          </p>
+  <div class="page-container">
+    <p-card>
+      <ng-template #title>
+        <div class="flex align-items-center justify-between gap-3 flex-wrap">
+          <span>{{ p.nombre }}</span>
+          <p-tag [value]="p.clasificacion" severity="info" />
         </div>
+      </ng-template>
 
-        <span
-          class="bg-blue-100 text-blue-700 text-sm font-medium px-3 py-1 rounded-full">
-          {{ p.clasificacion }}
-        </span>
+      <ng-template #subtitle>
+        Producto #{{ p.id }}
+      </ng-template>
+
+      <div class="mb-4">
+        <h3 class="text-lg font-semibold mb-2 m-0">Descripción</h3>
+        <p class="text-muted-color m-0 leading-relaxed">{{ p.descripcion }}</p>
       </div>
 
-      <div class="mb-8">
-        <h2 class="text-lg font-semibold text-gray-700 mb-2">
-          Descripción
-        </h2>
-
-        <p class="text-gray-600 leading-relaxed">
-          {{ p.descripcion }}
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-
-        <div class="bg-gray-50 rounded-lg p-4">
-          <p class="text-sm text-gray-500">
-            Precio
-          </p>
-
-          <p class="text-3xl font-bold text-green-600">
-            {{ p.precio | currency}}
-          </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="surface-100 border-round p-4">
+          <p class="text-sm text-muted-color m-0 mb-1">Precio</p>
+          <p class="text-3xl font-bold text-green-600 m-0">{{ p.precio | currency }}</p>
         </div>
-
-        <div class="bg-gray-50 rounded-lg p-4">
-          <p class="text-sm text-gray-500">
-            Vendedor
-          </p>
-
-          <p class="text-lg font-semibold text-gray-800">
-            Usuario #{{ p.usuario_id }}
-          </p>
+        <div class="surface-100 border-round p-4">
+          <p class="text-sm text-muted-color m-0 mb-1">Vendedor</p>
+          <p class="text-lg font-semibold m-0">Usuario #{{ p.usuario_id }}</p>
         </div>
-
       </div>
 
-      <div class="flex justify-between items-center">
-
-        <button
-          class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-5 py-2 rounded transition"
-          [routerLink]="['/productos']">
-          Volver
-        </button>
-
-        <button
-          class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded transition"
-          (click)="agregarAlCarrito(p)">
-          Agregar al carrito
-        </button>
-
-      </div>
-
-    </div>
-
+      <ng-template #footer>
+        <div class="flex justify-between gap-3 flex-wrap">
+          <p-button
+            label="Volver"
+            icon="pi pi-arrow-left"
+            severity="secondary"
+            [routerLink]="['/productos']"
+          />
+          <p-button
+            label="Agregar al carrito"
+            icon="pi pi-shopping-cart"
+            (onClick)="agregarAlCarrito(p)"
+          />
+        </div>
+      </ng-template>
+    </p-card>
   </div>
 }
