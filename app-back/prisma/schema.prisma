@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  // output   = "../src/prisma"
+  //output   = "../src/prisma"
 }
 
 datasource db {
@@ -37,7 +37,7 @@ model token_recuperacion {
 model pedido {
   id                  Int      @id @default(autoincrement())
   usuario_id          Int
-  estado              String   @db.VarChar(50)
+  estado              EstadoPedido @default(CARRITO)
   fecha_creacion      DateTime @default(now())
   fecha_actualizacion DateTime @updatedAt
   precio_total        Decimal  @db.Decimal(10, 2)
@@ -61,6 +61,13 @@ model producto_pedido {
 
   @@index([producto_id], map: "fk_producto_pedido_producto")
   @@index([pedido_id], map: "fk_producto_pedido_pedido")
+}
+
+enum EstadoPedido {
+  CARRITO
+  PENDIENTE
+  PAGO
+  CANCELADO
 }
 
 model producto {

@@ -81,6 +81,71 @@ export class UsuarioService {
         return usuarioSinPassword;
     }
 
+    async getDatosDeUsuario(id: number) {
+        const usuario = await this.usuarioRepository.obtenerPorId(id);
+        if (!usuario) {
+            return null;
+        }
+        return this.ocultarPassword(usuario);
+    }
+
+    async editarUsuario(id: number, data: {email: string, nombre: string,
+        apellido: string, direccion: string}) {
+        const usuario = await this.usuarioRepository.obtenerPorId(id);
+        if (!usuario) {
+            return null;
+        }
+        const usuarioEditado = await this.usuarioRepository.editarUsuario(id, data);
+        return  this.ocultarPassword(usuarioEditado);
+    }
+
+    async eliminarUsuario(id: number) {
+        const usuario = await this.usuarioRepository.obtenerPorId(id);
+
+        if (!usuario) {
+            return null;
+        }
+
+        const eliminado = await this.usuarioRepository.eliminarUsuario(id);
+        return this.ocultarPassword(eliminado);
+    }
+
+    async cambiarPassword(
+        id: number,
+        passwordActual: string,
+        passwordNueva: string
+    ) {
+        const usuario = await this.usuarioRepository.obtenerPorId(id);
+
+        if (!usuario) {
+            throw new Error("Usuario no encontrado");
+        }
+
+        // validar password actual
+        const esValida = await bcrypt.compare(passwordActual, usuario.password);
+
+        if (!esValida) {
+            throw new Error("La contraseña actual es incorrecta");
+        }
+
+        // validar nueva password
+        if (!this.passwordValida(passwordNueva)) {
+            throw new Error("PasswordDebil");
+        }
+
+        // hash nueva password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(passwordNueva, salt);
+
+        // actualizar
+        const usuarioActualizado = await this.usuarioRepository.editarPassword(
+            id,
+            hashedPassword
+        );
+
+        return this.ocultarPassword(usuarioActualizado);
+    }
+
     async enlaceRecuperarClave(email: string) {
         const usuario = await this.usuarioRepository.findUsuarioByEmail(email);
         if(!usuario){
