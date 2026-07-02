@@ -3,7 +3,18 @@
     Pedidos
   </h1>
 
-  @for (pedido of pedidos(); track pedido.id) {
-    <app-info-pedido [pedido]="pedido"></app-info-pedido>
+  @if (cargando()) {
+    <p class="text-gray-500">Cargando pedidos...</p>
+  } @else if (pedidos().length === 0) {
+    <p class="text-gray-500">No hay pedidos para mostrar.</p>
+  } @else {
+    @for (pedido of pedidos(); track pedido.id) {
+      <app-info-pedido
+        [pedido]="pedido"
+        [mostrarAccionesPedido]="true"
+        (pagarPedido)="pagarPedido($event)"
+        (cancelarPedido)="cancelarPedido($event)">
+      </app-info-pedido>
+    }
   }
 </div>
