@@ -1,5 +1,5 @@
 export const environment = {
 
-    API_URL : "https://high-ruth-respondent-commentary.trycloudflare.com/api"
+    API_URL : "https://brief-next-zshops-initial.trycloudflare.com/api"
 
 };

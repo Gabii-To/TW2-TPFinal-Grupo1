@@ -64,7 +64,7 @@
         "serve": {
           "options": {
             "allowedHosts":
-            ["accommodations-searches-thesaurus-export.trycloudflare.com"]
+            ["kids-officers-adopt-zinc.trycloudflare.com"]
           },
           "builder": "@angular/build:dev-server",
           "configurations": {
