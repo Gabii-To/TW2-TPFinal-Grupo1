@@ -21,4 +21,9 @@ export class InfoPedido {
   cancelarPedido = output<Pedido>();
 
   EstadoPedido = EstadoPedido;
+
+  imagenSrc(producto: PedidoProducto) {
+    const imagen = producto.imagenPrincipal;
+    return imagen ? `data:${imagen.tipo_mime};base64,${imagen.datos}` : '';
+  }
 }

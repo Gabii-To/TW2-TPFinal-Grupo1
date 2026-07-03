@@ -20,6 +20,62 @@
         </span>
       </div>
 
+      @if (p.imagenes && p.imagenes.length > 0 && imagenActual(p); as imagen) {
+        <div class="mb-8">
+          <div class="relative overflow-hidden rounded-lg bg-gray-100">
+            <img
+              [src]="imagenSrc(imagen)"
+              [alt]="p.nombre + ' imagen ' + (imagenActualIndex() + 1)"
+              class="w-full h-80 md:h-[420px] object-cover bg-gray-100">
+
+            @if (p.imagenes.length > 1) {
+              <button
+                type="button"
+                class="absolute left-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 h-10 w-10 rounded-full shadow transition"
+                aria-label="Imagen anterior"
+                (click)="imagenAnterior(p)">
+                &lsaquo;
+              </button>
+
+              <button
+                type="button"
+                class="absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 h-10 w-10 rounded-full shadow transition"
+                aria-label="Imagen siguiente"
+                (click)="imagenSiguiente(p)">
+                &rsaquo;
+              </button>
+
+              <div class="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/60 text-white text-sm px-3 py-1 rounded-full">
+                {{ imagenActualIndex() + 1 }} / {{ p.imagenes.length }}
+              </div>
+            }
+          </div>
+
+          @if (p.imagenes.length > 1) {
+            <div class="flex gap-3 mt-3 overflow-x-auto pb-1">
+              @for (imagenMiniatura of p.imagenes; track imagenMiniatura.id ?? $index) {
+                <button
+                  type="button"
+                  class="h-20 w-20 shrink-0 rounded-lg border-2 overflow-hidden transition"
+                  [class.border-blue-600]="imagenActualIndex() === $index"
+                  [class.border-transparent]="imagenActualIndex() !== $index"
+                  [attr.aria-label]="'Ver imagen ' + ($index + 1)"
+                  (click)="seleccionarImagen($index)">
+                  <img
+                    [src]="imagenSrc(imagenMiniatura)"
+                    [alt]="p.nombre + ' miniatura ' + ($index + 1)"
+                    class="h-full w-full object-cover bg-gray-100">
+                </button>
+              }
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="mb-8 h-64 rounded-lg bg-gray-100 flex items-center justify-center text-gray-400">
+          Sin imagen
+        </div>
+      }
+
       <div class="mb-8">
         <h2 class="text-lg font-semibold text-gray-700 mb-2">
           Descripción

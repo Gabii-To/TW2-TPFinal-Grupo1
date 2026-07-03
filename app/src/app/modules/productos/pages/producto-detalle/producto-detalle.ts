@@ -1,7 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { ProductoService } from '../../../../services/productos/producto-service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Producto } from '../../interfaces/producto.interface';
+import { Producto, ProductoImagen } from '../../interfaces/producto.interface';
 import { CurrencyPipe } from '@angular/common';
 import { AuthService } from '../../../../services/auth/auth-service';
 
@@ -16,6 +16,7 @@ import { AuthService } from '../../../../services/auth/auth-service';
 export class ProductoDetalle {
 
   producto = signal<Producto | null>(null);
+  imagenActualIndex = signal(0);
 
   constructor(
     private route: ActivatedRoute,
@@ -34,6 +35,7 @@ export class ProductoDetalle {
       }
 
       this.producto.set(producto);
+      this.imagenActualIndex.set(0);
     });
   }
 
@@ -57,5 +59,37 @@ export class ProductoDetalle {
         console.error('Error al agregar el producto al carrito:', err);
       }
     });
+  }
+
+  imagenSrc(imagen: ProductoImagen) {
+    return `data:${imagen.tipo_mime};base64,${imagen.datos}`;
+  }
+
+  imagenActual(producto: Producto) {
+    return producto.imagenes?.[this.imagenActualIndex()] ?? producto.imagenes?.[0] ?? null;
+  }
+
+  seleccionarImagen(index: number) {
+    this.imagenActualIndex.set(index);
+  }
+
+  imagenAnterior(producto: Producto) {
+    const total = producto.imagenes?.length ?? 0;
+
+    if (total === 0) {
+      return;
+    }
+
+    this.imagenActualIndex.update((index) => (index - 1 + total) % total);
+  }
+
+  imagenSiguiente(producto: Producto) {
+    const total = producto.imagenes?.length ?? 0;
+
+    if (total === 0) {
+      return;
+    }
+
+    this.imagenActualIndex.update((index) => (index + 1) % total);
   }
 }

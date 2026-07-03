@@ -15,4 +15,13 @@
     productos = input.required<Producto[]>();
 
     constructor(public authService: AuthService) {}
+
+    imagenPrincipal(producto: Producto) {
+      return producto.imagenes?.[0];
+    }
+
+    imagenSrc(producto: Producto) {
+      const imagen = this.imagenPrincipal(producto);
+      return imagen ? `data:${imagen.tipo_mime};base64,${imagen.datos}` : '';
+    }
   }
