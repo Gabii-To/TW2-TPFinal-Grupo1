@@ -3,11 +3,13 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../../services/auth/auth-service';
 import { CommonModule } from '@angular/common';
-
+import { Card } from 'primeng/card';
+import { Button } from 'primeng/button';
+import { Password } from 'primeng/password';
 
 @Component({
   selector: 'app-renovar-clave',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, Card, Button, Password],
   templateUrl: './renovar-clave.html',
   styleUrl: './renovar-clave.css',
 })

@@ -17,8 +17,10 @@ export interface ProductoCreateData {
 
 const includeImagenes = {
     imagenes: {
-        orderBy: {
-            orden: "asc" as const,
+        select: {
+            datos: true,
+            tipo_mime: true,
+            orden: true,
         },
     },
 };

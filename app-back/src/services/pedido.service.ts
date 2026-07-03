@@ -104,7 +104,7 @@ export class PedidoService {
         if (!carrito) throw new Error('No hay carrito activo');
 
         const carritoCompleto = await this.pedidoRepository.buscarPorId(carrito.id);
-        if (!carritoCompleto || carritoCompleto.productos.length === 0) {
+        if (!carritoCompleto || !carritoCompleto.productos || carritoCompleto.productos.length === 0) {
             throw new Error('No se puede confirmar un carrito vacío');
         }
 
