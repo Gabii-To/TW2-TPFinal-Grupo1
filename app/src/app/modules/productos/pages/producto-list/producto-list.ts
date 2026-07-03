@@ -7,6 +7,7 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-producto-list',
+  standalone: true,
   imports: [TablaProductos, Button, RouterLink],
   templateUrl: './producto-list.html',
 })

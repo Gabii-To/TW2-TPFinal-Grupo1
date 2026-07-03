@@ -11,8 +11,6 @@ export const routes: Routes = [
     loadChildren: () => import('./modules/auth/auth.routes').then((a) => a.authRoutes),
   },
   {
-<<<<<<< Updated upstream
-=======
     path: '',
     component: MenuComponent,
     children: [
@@ -44,7 +42,6 @@ export const routes: Routes = [
     ],
   },
   {
->>>>>>> Stashed changes
     path: '**',
     redirectTo: 'productos',
   },

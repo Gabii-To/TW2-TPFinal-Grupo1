@@ -1,10 +1,6 @@
 <div class="page-container">
   <h1 class="page-title">Pedidos</h1>
 
-<<<<<<< Updated upstream
-  @for (pedido of pedidos(); track pedido.id) {
-    <app-info-pedido [pedido]="pedido"></app-info-pedido>
-=======
   @if (cargando()) {
     <div class="flex justify-center py-12">
       <p-progress-spinner ariaLabel="Cargando pedidos" />
@@ -23,6 +19,5 @@
         (cancelarPedido)="cancelarPedido($event)"
       />
     }
->>>>>>> Stashed changes
   }
 </div>

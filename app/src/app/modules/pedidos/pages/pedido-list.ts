@@ -8,11 +8,13 @@ import { ProgressSpinner } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-pedido-list',
+  standalone: true,
   templateUrl: './pedido-list.html',
   imports: [InfoPedido, ProgressSpinner],
 })
 export class PedidoList {
   pedidos = signal<Pedido[]>([]);
+  cargando = signal(false);
 
   constructor(
     private pedidoService: PedidoService,
@@ -27,16 +29,8 @@ export class PedidoList {
   obtenerPedidos() {
     const usuario = this.authService.usuarioLogueado();
 
-    if (!usuario) {
-      this.router.navigate(['/login']);
-      return;
-    }
+    if (!usuario) return;
 
-<<<<<<< Updated upstream
-    const pedidosEjemplo = this.pedidoService.getPedidos();
-    this.pedidos.set(pedidosEjemplo);
-  }
-=======
     this.cargando.set(true);
     this.pedidoService.listarPedidos(usuario.id).subscribe({
       next: (pedidos) => {
@@ -53,10 +47,7 @@ export class PedidoList {
   pagarPedido(pedido: Pedido) {
     const usuario = this.authService.usuarioLogueado();
 
-    if (!usuario) {
-      this.router.navigate(['/login']);
-      return;
-    }
+    if (!usuario) return;
 
     this.pedidoService.pagarPedido(usuario.id, pedido.id).subscribe({
       next: () => {
@@ -71,10 +62,7 @@ export class PedidoList {
   cancelarPedido(pedido: Pedido) {
     const usuario = this.authService.usuarioLogueado();
 
-    if (!usuario) {
-      this.router.navigate(['/login']);
-      return;
-    }
+    if (!usuario) return;
 
     this.pedidoService.cancelarPedido(usuario.id, pedido.id).subscribe({
       next: () => {
@@ -85,5 +73,4 @@ export class PedidoList {
       },
     });
   }
->>>>>>> Stashed changes
 }

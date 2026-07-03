@@ -48,7 +48,11 @@
           <small class="p-error">
             Mínimo 8 caracteres con mayúscula, minúscula, número y carácter especial
           </small>
-        }
+          } @else if (registerForm.get('password')?.errors?.['minlength']) {
+              <small class="p-error">La contraseña debe tener al menos 8 caracteres.</small>
+            } @else if (registerForm.get('password')?.errors?.['pattern']) {
+              <small class="p-error">Debe incluir una mayúscula, una minúscula, un número y un carácter especial.</small>
+            }
       </div>
 
       <div class="field">

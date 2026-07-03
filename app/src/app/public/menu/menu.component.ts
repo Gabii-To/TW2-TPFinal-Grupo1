@@ -10,6 +10,7 @@ import { AuthService } from '../../services/auth/auth-service';
 
 @Component({
   selector: 'app-menu',
+  standalone: true,
   imports: [
     FooterComponent,
     RouterLink,

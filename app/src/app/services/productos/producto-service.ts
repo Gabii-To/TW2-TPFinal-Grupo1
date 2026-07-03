@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Producto} from '../../modules/productos/interfaces/producto.interface';
+import { HttpClient } from '@angular/common/http';
+import { Producto } from '../../modules/productos/interfaces/producto.interface';
 import { environment } from '../../../environments/environment.development';
 import { catchError, of, throwError } from 'rxjs';
 
@@ -11,11 +11,11 @@ export class ProductoService {
   constructor(private http: HttpClient) {}
 
   getProductos() {
-    return this.http.get<Producto[]>(`${environment.API_URL}/productos`)
+    return this.http.get<Producto[]>(`${environment.API_URL}/productos`);
   }
 
-  agregarProdAlCarrito(producto: Producto) {
-    return this.http.post(`${environment.API_URL}/carrito/agregar`, producto);
+  agregarProdAlCarrito(usuarioId: number, productoId: number, cantidad: number = 1) {
+    return this.http.post(`${environment.API_URL}/carrito/items?usuarioId=${usuarioId}`, { productoId, cantidad });
   }
 
   verProducto(id: number) {

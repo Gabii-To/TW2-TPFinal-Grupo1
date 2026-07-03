@@ -1,15 +1,6 @@
 <div class="page-container">
   <h1 class="page-title">Carrito de Compras</h1>
 
-<<<<<<< Updated upstream
-  <app-info-pedido [pedido]="pedido()"></app-info-pedido>
-
-  <div class="flex justify-end mt-6">
-    <button class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded" (click)="finalizarCompra()">
-      Finalizar Compra
-    </button>
-  </div>
-=======
   @if (cargando()) {
     <div class="flex justify-center py-12">
       <p-progress-spinner ariaLabel="Cargando carrito" />
@@ -39,5 +30,4 @@
       />
     </div>
   }
->>>>>>> Stashed changes
 </div>

@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { EstadoPedido, Pedido } from './../../modules/pedidos/interfaces/pedido.interface';
 import { environment } from '../../../environments/environment.development';
-import { Observable, of } from "rxjs";
+import { Observable, map } from "rxjs";
+import { Pedido, PedidoBackend } from './../../modules/pedidos/interfaces/pedido.interface';
 
 @Injectable({
   providedIn: "root",
@@ -10,150 +10,77 @@ import { Observable, of } from "rxjs";
 export class PedidoService {
   constructor(private http: HttpClient) {}
 
-  obtenerPedidoPendiente(usuarioId: number): Observable<Pedido> {
-    // return this.http.get<Pedido>(`${environment.API_URL}/pedidos?usuarioId=${usuarioId}&estado=${EstadoPedido.PENDIENTE}`);
-    // devuelve un pedido de ejemplo
-    const pedidoEjemplo: Pedido = {
-      id: 1,
-      usuario_id: 1,
-      fecha: "2023-06-01",
-      estado: EstadoPedido.PENDIENTE,
-      productos: [
-        {
-          id: 1,
-          id_producto: 1,
-          nombre: "Producto 1",
-          descripcion: "Descripción del producto 1",
-          clasificacion: "Categoría 1",
-          precio: 10.0,
-          cantidad: 2,
-          subtotal: 20.0,
-        },
-        {
-          id: 2,
-          id_producto: 2,
-          nombre: "Producto 2",
-          descripcion: "Descripción del producto 2",
-          clasificacion: "Categoría 2",
-          precio: 15.0,
-          cantidad: 1,
-          subtotal: 15.0,
-        },
-        {
-          id: 3,
-          id_producto: 3,
-          nombre: "Producto 3",
-          descripcion: "Descripción del producto 3",
-          clasificacion: "Categoría 3",
-          precio: 20.0,
-          cantidad: 1,
-          subtotal: 20.0,
-        }
-      ],
-      total: 55.0,
+  obtenerCarrito(usuarioId: number): Observable<Pedido> {
+    return this.http
+      .get<PedidoBackend>(`${environment.API_URL}/carrito?usuarioId=${usuarioId}`)
+      .pipe(map((pedido) => this.mapearPedido(pedido)));
+  }
+
+  confirmarPedido(usuarioId: number): Observable<Pedido> {
+    return this.http
+      .post<PedidoBackend>(`${environment.API_URL}/carrito/confirmar?usuarioId=${usuarioId}`, {})
+      .pipe(map((pedido) => this.mapearPedido(pedido)));
+  }
+
+  listarPedidos(usuarioId: number): Observable<Pedido[]> {
+    return this.http
+      .get<PedidoBackend[]>(`${environment.API_URL}/pedidos?usuarioId=${usuarioId}`)
+      .pipe(map((pedidos) => pedidos.map((pedido) => this.mapearPedido(pedido))));
+  }
+
+  pagarPedido(usuarioId: number, pedidoId: number): Observable<Pedido> {
+    return this.http
+      .put<PedidoBackend>(`${environment.API_URL}/pedidos/${pedidoId}/pagar?usuarioId=${usuarioId}`, {})
+      .pipe(map((pedido) => this.mapearPedido(pedido)));
+  }
+
+  cancelarPedido(usuarioId: number, pedidoId: number): Observable<Pedido> {
+    return this.http
+      .put<PedidoBackend>(`${environment.API_URL}/pedidos/${pedidoId}/cancelar?usuarioId=${usuarioId}`, {})
+      .pipe(map((pedido) => this.mapearPedido(pedido)));
+  }
+
+  agregarProducto(usuarioId: number, productoId: number, cantidad: number): Observable<Pedido> {
+    return this.http
+      .post<PedidoBackend>(`${environment.API_URL}/carrito/items?usuarioId=${usuarioId}`, { productoId, cantidad })
+      .pipe(map((pedido) => this.mapearPedido(pedido)));
+  }
+
+  actualizarCantidadProducto(usuarioId: number, productoId: number, cantidad: number): Observable<Pedido> {
+    return this.http
+      .patch<PedidoBackend>(`${environment.API_URL}/carrito/items/${productoId}?usuarioId=${usuarioId}`, { cantidad })
+      .pipe(map((pedido) => this.mapearPedido(pedido)));
+  }
+
+  quitarProducto(usuarioId: number, productoId: number): Observable<Pedido> {
+    return this.http
+      .delete<PedidoBackend>(`${environment.API_URL}/carrito/items/${productoId}?usuarioId=${usuarioId}`)
+      .pipe(map((pedido) => this.mapearPedido(pedido)));
+  }
+
+  vaciarCarrito(usuarioId: number): Observable<void> {
+    return this.http.delete<void>(`${environment.API_URL}/carrito?usuarioId=${usuarioId}`);
+  }
+
+  private mapearPedido(pedido: PedidoBackend): Pedido {
+    return {
+      id: pedido.id,
+      usuario_id: pedido.usuario_id,
+      fecha_creacion: pedido.fecha_creacion,
+      fecha_actualizacion: pedido.fecha_actualizacion,
+      estado: pedido.estado,
+      precio_total: Number(pedido.precio_total),
+      productos: (pedido.productos ?? []).map((item) => ({
+        id: item.id,
+        id_producto: item.producto_id,
+        nombre: item.producto.nombre,
+        descripcion: item.producto.descripcion,
+        clasificacion: item.producto.clasificacion,
+        precio: Number(item.precio_unitario),
+        cantidad: item.cantidad,
+        subtotal: Number(item.subtotal),
+        imagenPrincipal: item.producto.imagenes?.[0],
+      })),
     };
-    return of(pedidoEjemplo);
-  }
-
-  finalizarCompra(pedido: Pedido): Observable<void> {
-    // return this.http.post<void>(`${environment.API_URL}/pedidos/finalizar`, pedido);
-    console.log("Compra finalizada:", pedido);
-    return of();
-  }
-
-  getPedidos() {
-    // return this.http.get<Pedido[]>(`${environment.API_URL}/pedidos`);
-
-    // devuelve un array de pedidos de ejemplo
-    const pedidosEjemplo: Pedido[] = [
-      {
-        id: 1,
-        usuario_id: 1,
-        fecha: "2023-06-01",
-        estado: EstadoPedido.PENDIENTE,
-        productos: [
-          {
-            id: 1,
-            id_producto: 1,
-            nombre: "Producto 1",
-            descripcion: "Descripción del producto 1",
-            clasificacion: "Categoría 1",
-            precio: 10.0,
-            cantidad: 2,
-            subtotal: 20.0,
-          },
-          {
-            id: 2,
-            id_producto: 2,
-            nombre: "Producto 2",
-            descripcion: "Descripción del producto 2",
-            clasificacion: "Categoría 2",
-            precio: 15.0,
-            cantidad: 1,
-            subtotal: 15.0,
-          },
-          {
-            id: 3,
-            id_producto: 3,
-            nombre: "Producto 3",
-            descripcion: "Descripción del producto 3",
-            clasificacion: "Categoría 3",
-            precio: 20.0,
-            cantidad: 1,
-            subtotal: 20.0,
-          }
-        ],
-        total: 55.0,
-      },
-      {
-        id: 2,
-        usuario_id: 2,
-        fecha: "2023-06-02",
-        estado: EstadoPedido.EN_PROCESO,
-        productos: [
-          {
-            id: 4,
-            id_producto: 2,
-            nombre: "Producto 2",
-            descripcion: "Descripción del producto 2",
-            clasificacion: "Categoría 2",
-            precio: 15.0,
-            cantidad: 1,
-            subtotal: 15.0,
-          }
-        ],
-        total: 15.0,
-      },
-      {
-        id: 3,
-        usuario_id: 3,
-        fecha: "2023-06-03",
-        estado: EstadoPedido.COMPLETADO,
-        productos: [
-          {
-            id: 5,
-            id_producto: 3,
-            nombre: "Producto 3",
-            descripcion: "Descripción del producto 3",
-            clasificacion: "Categoría 3",
-            precio: 20.0,
-            cantidad: 1,
-            subtotal: 20.0,
-          },
-          {
-            id: 6,
-            id_producto: 4,
-            nombre: "Producto 4",
-            descripcion: "Descripción del producto 4",
-            clasificacion: "Categoría 4",
-            precio: 25.0,
-            cantidad: 1,
-            subtotal: 25.0,
-          }
-        ],
-        total: 45.0,
-      }
-    ];
-    return pedidosEjemplo;
   }
 }

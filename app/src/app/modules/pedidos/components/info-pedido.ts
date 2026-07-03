@@ -1,27 +1,15 @@
-<<<<<<< Updated upstream
-import { Component, input } from "@angular/core";
-import { Pedido } from "../interfaces/pedido.interface";
-import { DatePipe } from "@angular/common";
-import { CurrencyPipe } from "@angular/common";
-=======
-import { Component, computed, input, output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
+import { CurrencyPipe, DatePipe } from '@angular/common';
 import { EstadoPedido, Pedido, PedidoProducto } from '../interfaces/pedido.interface';
-import { DatePipe, CurrencyPipe } from '@angular/common';
-import { Card } from 'primeng/card';
-import { Tag } from 'primeng/tag';
-import { TableModule } from 'primeng/table';
-import { Button } from 'primeng/button';
->>>>>>> Stashed changes
 
 @Component({
   selector: 'app-info-pedido',
+  standalone: true,
   templateUrl: './info-pedido.html',
-  imports: [DatePipe, CurrencyPipe, Card, Tag, TableModule, Button],
+  imports: [DatePipe, CurrencyPipe],
 })
 export class InfoPedido {
   pedido = input.required<Pedido>();
-<<<<<<< Updated upstream
-=======
   mostrarAccionesCarrito = input(false);
   mostrarAccionesPedido = input(false);
 
@@ -33,17 +21,21 @@ export class InfoPedido {
 
   EstadoPedido = EstadoPedido;
 
-  estadoSeverity = computed(() => {
+  imagenSrc(producto: PedidoProducto) {
+    const imagen = producto.imagenPrincipal;
+    return imagen ? `data:${imagen.tipo_mime};base64,${imagen.datos}` : '';
+  }
+
+  estadoClase() {
     switch (this.pedido().estado) {
       case EstadoPedido.PENDIENTE:
-        return 'warn';
+        return 'bg-yellow-100 text-yellow-700';
       case EstadoPedido.PAGO:
-        return 'success';
+        return 'bg-green-100 text-green-700';
       case EstadoPedido.CANCELADO:
-        return 'danger';
+        return 'bg-red-100 text-red-700';
       default:
-        return 'info';
+        return 'bg-blue-100 text-blue-700';
     }
-  });
->>>>>>> Stashed changes
+  }
 }

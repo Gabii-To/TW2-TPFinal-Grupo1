@@ -1,0 +1,27 @@
+<div class="auth-page">
+  <p-card styleClass="auth-card">
+    <ng-template #header>
+      <div class="auth-header">
+        <i class="pi pi-key auth-icon"></i>
+        <h1>Recuperar contraseña</h1>
+      </div>
+    </ng-template>
+
+    <form [formGroup]="recuperarClaveForm" (ngSubmit)="onSubmit()" class="space-y-4">
+      <div class="field">
+        <label for="email" class="block text-sm font-medium text-slate-700 mb-1">Email</label>
+        <input pInputText id="email" type="email" formControlName="email" placeholder="correo@ejemplo.com" class="w-full" />
+        @if (recuperarClaveForm.get('email')?.invalid && recuperarClaveForm.get('email')?.touched) {
+          <p class="text-red-500 text-sm mt-1">Ingresá un email válido</p>
+        }
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <p-button type="submit" label="Enviar email" [disabled]="recuperarClaveForm.invalid" styleClass="w-full p-button-success"></p-button>
+        <p-button type="button" label="Volver" icon="pi pi-arrow-left" [routerLink]="['/login']" styleClass="w-full p-button-secondary"></p-button>
+      </div>
+    </form>
+  </p-card>
+</div>
+
+

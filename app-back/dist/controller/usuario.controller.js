@@ -73,9 +73,7 @@ export class UsuarioController {
             });
         }
         catch (error) {
-            // 🚨 CAMBIO TEMPORAL DE DETECCIÓN:
-            console.log("EL ERROR REAL ES:", error); // Esto lo obligará a salir en tu terminal de VS Code
-            // Esto mandará el texto exacto del error a Postman (ej: "PasswordDebil", "EmailRepetido")
+            console.log("EL ERROR REAL ES:", error); //cambiar?
             res.status(400).json({ error: error.message || "Error interno" });
         }
     };

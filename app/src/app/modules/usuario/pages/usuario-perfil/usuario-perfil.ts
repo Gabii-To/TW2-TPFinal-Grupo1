@@ -12,6 +12,7 @@ import { ProgressSpinner } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-usuario-perfil',
+  standalone: true,
   imports: [FormsModule, Card, Button, InputText, Password, ProgressSpinner],
   templateUrl: './usuario-perfil.html',
 })
@@ -33,10 +34,7 @@ export class UsuarioPerfil {
   ngOnInit() {
     const usuarioLogueado = this.authService.usuarioLogueado();
 
-    if (!usuarioLogueado) {
-      this.router.navigate(['/login']);
-      return;
-    }
+    if (!usuarioLogueado) return;
 
     this.usuarioService.obtenerUsuario(usuarioLogueado.id).subscribe({
       next: (usuario) => {
@@ -95,19 +93,21 @@ export class UsuarioPerfil {
       return;
     }
 
-    this.usuarioService.cambiarPassword(user.id, this.passwordActual, this.passwordNuevo).subscribe({
-      next: (respuesta: any) => {
-        alert(respuesta.message);
+    this.usuarioService
+      .cambiarPassword(user.id, this.passwordActual, this.passwordNuevo)
+      .subscribe({
+        next: (respuesta: any) => {
+          alert(respuesta.message);
 
-        this.passwordActual = '';
-        this.passwordNuevo = '';
-        this.confirmarPassword = '';
+          this.passwordActual = '';
+          this.passwordNuevo = '';
+          this.confirmarPassword = '';
 
-        window.location.reload();
-      },
-      error: (error) => {
-        alert(error.error.error);
-      },
-    });
+          window.location.reload();
+        },
+        error: (error) => {
+          alert(error.error.error);
+        },
+      });
   }
 }

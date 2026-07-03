@@ -43,7 +43,8 @@ export class ProductoController {
                 descripcion,
                 clasificacion,
                 precio,
-                usuario_id
+                usuario_id,
+                imagenes = []
             } = req.body;
 
             if (
@@ -58,12 +59,19 @@ export class ProductoController {
                 });
             }
 
+            if (!Array.isArray(imagenes)) {
+                return res.status(400).json({
+                    error: "Las imágenes deben enviarse en un arreglo"
+                });
+            }
+
             const producto = await this.productoService.crearProducto({
                 nombre,
                 descripcion,
                 clasificacion,
                 precio: Number(precio),
-                usuario_id: Number(usuario_id)
+                usuario_id: Number(usuario_id),
+                imagenes
             });
 
             return res.status(201).json(producto);
