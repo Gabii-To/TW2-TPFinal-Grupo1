@@ -52,5 +52,11 @@ export declare class UsuarioService {
         apellido: string;
         direccion: string;
     }>;
+    enlaceRecuperarClave(email: string): Promise<{
+        mensaje: string;
+    }>;
+    renovarClaveConToken(token: string, password: string): Promise<{
+        mensaje: string;
+    }>;
 }
 //# sourceMappingURL=usuario.service.d.ts.map

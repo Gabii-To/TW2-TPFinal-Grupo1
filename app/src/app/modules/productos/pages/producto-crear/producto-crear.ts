@@ -29,24 +29,15 @@ export class ProductoCrear {
   constructor(
     private productoService: ProductoService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
-  ngOnInit() {
-    const usuario = this.authService.usuarioLogueado();
-
-    if (!usuario) {
-      this.router.navigate(['/login']);
-    }
-  }
+  ngOnInit() {}
 
   guardar() {
     const usuario = this.authService.usuarioLogueado();
 
-    if (!usuario) {
-      this.router.navigate(['/login']);
-      return;
-    }
+    if (!usuario) return;
 
     this.formError = '';
     this.producto.usuario_id = usuario.id;

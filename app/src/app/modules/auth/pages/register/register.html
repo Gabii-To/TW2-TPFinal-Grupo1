@@ -8,10 +8,20 @@
     </ng-template>
 
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="auth-form-error" [hidden]="!formError">
+        {{ formError }}
+      </div>
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
         <div class="field">
           <label for="nombre">Nombre *</label>
-          <input pInputText id="nombre" formControlName="nombre" placeholder="Nombre" class="w-full" />
+          <input
+            pInputText
+            id="nombre"
+            formControlName="nombre"
+            placeholder="Nombre"
+            class="w-full"
+          />
           @if (registerForm.get('nombre')?.invalid && registerForm.get('nombre')?.touched) {
             <small class="p-error">Ingrese su nombre</small>
           }
@@ -19,7 +29,13 @@
 
         <div class="field">
           <label for="apellido">Apellido *</label>
-          <input pInputText id="apellido" formControlName="apellido" placeholder="Apellido" class="w-full" />
+          <input
+            pInputText
+            id="apellido"
+            formControlName="apellido"
+            placeholder="Apellido"
+            class="w-full"
+          />
           @if (registerForm.get('apellido')?.invalid && registerForm.get('apellido')?.touched) {
             <small class="p-error">Ingrese su apellido</small>
           }
@@ -28,7 +44,14 @@
 
       <div class="field">
         <label for="email">Correo Electrónico *</label>
-        <input pInputText id="email" type="email" formControlName="email" placeholder="correo@ejemplo.com" class="w-full" />
+        <input
+          pInputText
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="correo@ejemplo.com"
+          class="w-full"
+        />
         @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
           <small class="p-error">Ingrese un email válido</small>
         }
@@ -48,28 +71,30 @@
           <small class="p-error">
             Mínimo 8 caracteres con mayúscula, minúscula, número y carácter especial
           </small>
-          } @else if (registerForm.get('password')?.errors?.['minlength']) {
-              <small class="p-error">La contraseña debe tener al menos 8 caracteres.</small>
-            } @else if (registerForm.get('password')?.errors?.['pattern']) {
-              <small class="p-error">Debe incluir una mayúscula, una minúscula, un número y un carácter especial.</small>
-            }
+        } @else if (registerForm.get('password')?.errors?.['minlength']) {
+          <small class="p-error">La contraseña debe tener al menos 8 caracteres.</small>
+        } @else if (registerForm.get('password')?.errors?.['pattern']) {
+          <small class="p-error"
+            >Debe incluir una mayúscula, una minúscula, un número y un carácter especial.</small
+          >
+        }
       </div>
 
       <div class="field">
         <label for="direccion">Dirección *</label>
-        <input pInputText id="direccion" formControlName="direccion" placeholder="Calle 123" class="w-full" />
+        <input
+          pInputText
+          id="direccion"
+          formControlName="direccion"
+          placeholder="Calle 123"
+          class="w-full"
+        />
         @if (registerForm.get('direccion')?.invalid && registerForm.get('direccion')?.touched) {
           <small class="p-error">La dirección es obligatoria</small>
         }
       </div>
 
-      <p-button
-        type="submit"
-        label="Registrarse"
-        icon="pi pi-user-plus"
-        [disabled]="registerForm.invalid"
-        styleClass="w-full"
-      />
+      <p-button type="submit" label="Registrarse" icon="pi pi-user-plus" styleClass="w-full" />
     </form>
   </p-card>
 </div>

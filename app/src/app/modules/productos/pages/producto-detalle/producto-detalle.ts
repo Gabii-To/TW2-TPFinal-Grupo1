@@ -19,7 +19,7 @@ export class ProductoDetalle {
     private route: ActivatedRoute,
     private productoService: ProductoService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   ngOnInit() {
@@ -39,10 +39,7 @@ export class ProductoDetalle {
   agregarAlCarrito(producto: Producto) {
     const usuario = this.authService.usuarioLogueado();
 
-    if (!usuario) {
-      this.router.navigate(['/login']);
-      return;
-    }
+    if (!usuario) return;
 
     if (!producto.id) {
       return;

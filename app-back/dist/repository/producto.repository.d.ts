@@ -1,33 +1,58 @@
+export interface ProductoImagenCreateData {
+    datos: string;
+    tipo_mime: string;
+    orden: number;
+}
+export interface ProductoCreateData {
+    nombre: string;
+    descripcion: string;
+    clasificacion: string;
+    precio: number;
+    usuario_id: number;
+    imagenes?: ProductoImagenCreateData[];
+}
 export declare class ProductoRepository {
-    findAllProductos(): Promise<{
+    findAllProductos(): Promise<({
+        imagenes: {
+            datos: string;
+            tipo_mime: string;
+            orden: number;
+        }[];
+    } & {
         id: number;
         nombre: string;
+        usuario_id: number;
         descripcion: string;
         clasificacion: string;
         precio: import("@prisma/client-runtime-utils").Decimal;
-        usuario_id: number;
-    }[]>;
-    findProductoById(id: number): Promise<{
+    })[]>;
+    findProductoById(id: number): Promise<({
+        imagenes: {
+            datos: string;
+            tipo_mime: string;
+            orden: number;
+        }[];
+    } & {
         id: number;
         nombre: string;
+        usuario_id: number;
         descripcion: string;
         clasificacion: string;
         precio: import("@prisma/client-runtime-utils").Decimal;
-        usuario_id: number;
-    } | null>;
-    create(data: {
-        nombre: string;
-        descripcion: string;
-        clasificacion: string;
-        precio: number;
-        usuario_id: number;
-    }): Promise<{
+    }) | null>;
+    create(data: ProductoCreateData): Promise<{
+        imagenes: {
+            datos: string;
+            tipo_mime: string;
+            orden: number;
+        }[];
+    } & {
         id: number;
         nombre: string;
+        usuario_id: number;
         descripcion: string;
         clasificacion: string;
         precio: import("@prisma/client-runtime-utils").Decimal;
-        usuario_id: number;
     }>;
 }
 //# sourceMappingURL=producto.repository.d.ts.map
