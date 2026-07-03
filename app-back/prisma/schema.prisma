@@ -78,7 +78,7 @@ model producto {
   precio        Decimal @db.Decimal(10, 2)
   usuario_id    Int
 
-  usuario  usuario @relation(fields: [usuario_id], references: [id])
+  usuario  usuario @relation(fields: [usuario_id], references: [id], onDelete: Cascade)
   pedidos  producto_pedido[]
   imagenes producto_imagen[]
 
