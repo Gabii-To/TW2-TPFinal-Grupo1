@@ -41,6 +41,11 @@ export const routes: Routes = [
     ],
   },
   {
+    path: 'pago',
+    loadChildren: () =>
+      import('./modules/pagos/pagos.routes').then(p => p.pagosRoutes)
+  },
+  {
     path: '**',
     redirectTo: 'productos',
   },

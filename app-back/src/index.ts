@@ -3,11 +3,17 @@ import cors from "cors";
 import mysql from "mysql2";
 import { AppRoutes } from "./routes/routes.js";
 import { config } from "./config/config.js";
+import env from "env-var";
 const app = express();
 
 const port = config.PORT;
 
-app.use(cors());
+app.use(cors({
+    origin: [
+        env.get('FRONT_URL').required().asString()
+    ],
+    credentials: true
+}));
 
 app.use(express.json({ limit: "15mb" }));
 

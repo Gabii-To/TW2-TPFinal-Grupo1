@@ -4,6 +4,11 @@ import { environment } from '../../../environments/environment.development';
 import { Observable, map } from "rxjs";
 import { Pedido, PedidoBackend } from './../../modules/pedidos/interfaces/pedido.interface';
 
+export interface PreferenciaPago {
+  preferenceId: string;
+  init_point: string;
+}
+
 @Injectable({
   providedIn: "root",
 })
@@ -28,9 +33,18 @@ export class PedidoService {
       .pipe(map((pedidos) => pedidos.map((pedido) => this.mapearPedido(pedido))));
   }
 
-  pagarPedido(usuarioId: number, pedidoId: number): Observable<Pedido> {
+  iniciarPago(usuarioId: number, pedidoId: number): Observable<PreferenciaPago> {
+    return this.http.post<PreferenciaPago>(
+      `${environment.API_URL}/pedidos/${pedidoId}/pagar?usuarioId=${usuarioId}`,
+      {}
+    );
+  }
+
+  confirmarPago(usuarioId: number, pedidoId: number): Observable<Pedido> {
     return this.http
-      .put<PedidoBackend>(`${environment.API_URL}/pedidos/${pedidoId}/pagar?usuarioId=${usuarioId}`, {})
+      .put<PedidoBackend>(
+        `${environment.API_URL}/pedidos/${pedidoId}/confirmar-pago?usuarioId=${usuarioId}`,
+        {})
       .pipe(map((pedido) => this.mapearPedido(pedido)));
   }
 

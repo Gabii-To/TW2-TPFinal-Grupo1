@@ -3,11 +3,13 @@ import { PedidoService } from "../services/pedido.service.js";
 import { type Request, type Response } from 'express'
 import { ProductoService } from "../services/producto.service.js";
 import { ProductoRepository } from '../repository/producto.repository.js';
+import {MercadopagoService} from "../services/mercadopago.service.js";
 
 const productoRepository = new ProductoRepository();
 const productoService = new ProductoService(productoRepository);
 const pedidoRepository = new PedidoRepository();
-const pedidoService = new PedidoService(pedidoRepository, productoService);
+const mercadopagoService = new MercadopagoService();
+const pedidoService = new PedidoService(pedidoRepository, productoService, mercadopagoService);
 
 export class PedidoController {
     //public getEmpleados = async (req: Request, res: Response) =>
@@ -49,6 +51,18 @@ export class PedidoController {
             res.status(200).json(pedido);
         } catch (error: any) {
             res.status(400).json({ mensaje: error.message });
+        }
+    }
+
+    iniciarPago = async (req: Request, res: Response) => {
+        try {
+            const usuarioId = Number(req.query.usuarioId);
+            const id = Number(req.params.id);
+
+            const preferencia = await pedidoService.iniciarPago(usuarioId, id);
+            res.status(200).json(preferencia);
+        } catch (error: any) {
+            res.status(400).json({mensaje: error.message});
         }
     }
 

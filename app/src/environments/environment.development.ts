@@ -1,5 +1,5 @@
 export const environment = {
 
-    API_URL : "http://localhost:3000/api"
+    API_URL : "https://brief-next-zshops-initial.trycloudflare.com/api"
 
 };

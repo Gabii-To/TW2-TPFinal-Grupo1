@@ -15,9 +15,9 @@
       <app-info-pedido
         [pedido]="pedido"
         [mostrarAccionesPedido]="true"
-        (pagarPedido)="pagarPedido($event)"
-        (cancelarPedido)="cancelarPedido($event)"
-      />
+        (iniciarPago)="pagarPedido($event)"
+        (cancelarPedido)="cancelarPedido($event)">
+      </app-info-pedido>
     }
   }
 </div>

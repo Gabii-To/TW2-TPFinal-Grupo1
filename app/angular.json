@@ -57,6 +57,10 @@
           "defaultConfiguration": "production"
         },
         "serve": {
+          "options": {
+            "allowedHosts":
+            ["kids-officers-adopt-zinc.trycloudflare.com"]
+          },
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
