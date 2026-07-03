@@ -1,36 +1,53 @@
 import { prisma } from '../prisma.js'
-import { EstadoPedido, type EstadoPedidoValue } from '../models/estado-pedido.model.js';
+import type { EstadoPedidoValue } from '../models/estado-pedido.model.js';
+
+const includePedidoCompleto = {
+    productos: {
+        include: {
+            producto: {
+                include: {
+                    imagenes: {
+                        orderBy: {
+                            orden: 'asc' as const,
+                        },
+                    },
+                },
+            },
+        },
+    },
+};
 
 export class PedidoRepository {
 
-    async crearCarrito(usuarioId: number) {
+    async crearCarrito(data: {
+        usuario_id: number;
+        estado: EstadoPedidoValue;
+        precio_total: number;
+    }) {
         return prisma.pedido.create({
-            data: {
-                usuario_id: usuarioId,
-                estado: EstadoPedido.CARRITO,
-                precio_total: 0,
-            }, include: { productos: { include: { producto: true } } },
+            data,
+            include: includePedidoCompleto,
         });
     }
 
-    async buscarCarritoActivo(usuarioId: number) {
+    async buscarCarritoActivo(usuarioId: number, estado: EstadoPedidoValue) {
         return prisma.pedido.findFirst({
-            where: { usuario_id: usuarioId, estado: EstadoPedido.CARRITO },
-            include: { productos: { include: { producto: true } } },
+            where: { usuario_id: usuarioId, estado },
+            include: includePedidoCompleto,
         });
     }
 
     async buscarPorId(id: number) {
         return prisma.pedido.findUnique({
             where: { id },
-            include: { productos: { include: { producto: true } } },
+            include: includePedidoCompleto,
         });
     }
 
-    async listarPorUsuario(usuarioId: number) {
+    async listarPorUsuario(usuarioId: number, estadoExcluido: EstadoPedidoValue) {
         return prisma.pedido.findMany({
-            where: { usuario_id: usuarioId, estado: { not: EstadoPedido.CARRITO } },
-            include: { productos: { include: { producto: true } } },
+            where: { usuario_id: usuarioId, estado: { not: estadoExcluido } },
+            include: includePedidoCompleto,
             orderBy: { fecha_creacion: 'desc' },
         });
     }
@@ -39,7 +56,7 @@ export class PedidoRepository {
         return prisma.pedido.update({
             where: { id },
             data: { estado },
-            include: { productos: { include: { producto: true } } },
+            include: includePedidoCompleto,
         });
     }
 
@@ -47,7 +64,7 @@ export class PedidoRepository {
         return prisma.pedido.update({
             where: { id },
             data: { precio_total: total },
-            include: { productos: { include: { producto: true } } },
+            include: includePedidoCompleto,
         });
     }
 
@@ -58,22 +75,25 @@ export class PedidoRepository {
         });
     }
 
-    async agregarItem(pedidoId: number, productoId: number, cantidad: number, precioUnitario: number) {
+    async agregarItem(data: {
+        pedido_id: number;
+        producto_id: number;
+        cantidad: number;
+        precio_unitario: number;
+        subtotal: number;
+    }) {
         return prisma.producto_pedido.create({
-            data: {
-                pedido_id: pedidoId,
-                producto_id: productoId,
-                cantidad,
-                precio_unitario: precioUnitario,
-                subtotal: cantidad * precioUnitario,
-            },
+            data,
         });
     }
 
-    async actualizarCantidadItem(itemId: number, cantidad: number, precioUnitario: number) {
+    async actualizarCantidadItem(itemId: number, data: {
+        cantidad: number;
+        subtotal: number;
+    }) {
         return prisma.producto_pedido.update({
             where: { id: itemId },
-            data: { cantidad, subtotal: cantidad * precioUnitario },
+            data,
         });
     }
 

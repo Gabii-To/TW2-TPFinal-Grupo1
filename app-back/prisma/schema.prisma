@@ -78,8 +78,21 @@ model producto {
   precio        Decimal @db.Decimal(10, 2)
   usuario_id    Int
 
-  usuario usuario @relation(fields: [usuario_id], references: [id], onDelete: Cascade)
-  pedidos producto_pedido[]
+  usuario  usuario @relation(fields: [usuario_id], references: [id])
+  pedidos  producto_pedido[]
+  imagenes producto_imagen[]
 
   @@index([usuario_id], map: "fk_producto_usuario")
+}
+
+model producto_imagen {
+  id          Int    @id @default(autoincrement())
+  producto_id Int
+  datos       String @db.LongText
+  tipo_mime   String @db.VarChar(100)
+  orden       Int    @default(0)
+
+  producto producto @relation(fields: [producto_id], references: [id], onDelete: Cascade)
+
+  @@index([producto_id], map: "fk_producto_imagen_producto")
 }
