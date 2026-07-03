@@ -1,34 +1,33 @@
-<div class="container mx-auto p-6">
-  <h1 class="text-3xl font-bold mb-6 text-gray-800">
-    Carrito de Compras
-  </h1>
+<div class="page-container">
+  <h1 class="page-title">Carrito de Compras</h1>
 
   @if (cargando()) {
-    <p class="text-gray-500">Cargando carrito...</p>
+    <div class="flex justify-center py-12">
+      <p-progress-spinner ariaLabel="Cargando carrito" />
+    </div>
   } @else if (pedido(); as carrito) {
     <app-info-pedido
       [pedido]="carrito"
       [mostrarAccionesCarrito]="true"
       (incrementarCantidad)="incrementarCantidad($event)"
       (decrementarCantidad)="decrementarCantidad($event)"
-      (quitarProducto)="quitarProducto($event)">
-    </app-info-pedido>
+      (quitarProducto)="quitarProducto($event)"
+    />
 
-    <div class="flex justify-end gap-3 mt-6">
-      <button
-        type="button"
-        class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded transition"
+    <div class="action-bar">
+      <p-button
+        label="Vaciar carrito"
+        icon="pi pi-trash"
+        severity="secondary"
         [disabled]="carrito.productos.length === 0"
-        (click)="vaciarCarrito()">
-        Vaciar carrito
-      </button>
-      <button
-        type="button"
-        class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded transition disabled:opacity-50"
+        (onClick)="vaciarCarrito()"
+      />
+      <p-button
+        label="Finalizar Compra"
+        icon="pi pi-check"
         [disabled]="carrito.productos.length === 0"
-        (click)="finalizarCompra()">
-        Finalizar Compra
-      </button>
+        (onClick)="finalizarCompra()"
+      />
     </div>
   }
 </div>
