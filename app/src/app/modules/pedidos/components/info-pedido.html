@@ -1,12 +1,14 @@
 <div class="bg-white rounded-xl shadow-md p-5 border border-gray-200 hover:shadow-lg transition mb-4">
   <div class="flex justify-between items-start mb-3 gap-3">
-    <h2 class="text-xl font-semibold text-gray-800">
-      Pedido #{{ pedido().id }}
-    </h2>
+    @if(pedido().estado != EstadoPedido.CARRITO) {
+      <h2 class="text-xl font-semibold text-gray-800">
+        Pedido #{{ pedido().id }}
+      </h2>
 
-    <span class="text-xs font-medium px-2 py-1 rounded-full" [class]="estadoClase()">
-      {{ pedido().estado }}
-    </span>
+      <span class="text-xs font-medium px-2 py-1 rounded-full" [class]="estadoClase()">
+        {{ pedido().estado }}
+      </span>
+    }
   </div>
 
   <p class="text-gray-600 mb-4">
