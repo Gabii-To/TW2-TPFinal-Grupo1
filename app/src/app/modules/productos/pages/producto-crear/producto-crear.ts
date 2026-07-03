@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { ProductoService } from '../../../../services/productos/producto-service';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../services/auth/auth-service';
+import { ProductoService } from '../../../../services/productos/producto-service';
 import { ProductoImagen } from '../../interfaces/producto.interface';
 
 @Component({
@@ -10,9 +10,21 @@ import { ProductoImagen } from '../../interfaces/producto.interface';
   standalone: true,
   imports: [RouterLink, FormsModule],
   templateUrl: './producto-crear.html',
-  styleUrl: './producto-crear.css',
 })
 export class ProductoCrear {
+  categorias = ['Tecnología', 'Hogar', 'Deportes', 'Ropa', 'Otros'];
+
+  producto = {
+    nombre: '',
+    descripcion: '',
+    clasificacion: '',
+    precio: 0,
+    usuario_id: 0,
+    imagenes: [] as ProductoImagen[],
+  };
+
+  formError = '';
+  submitting = false;
 
   constructor(
     private productoService: ProductoService,
@@ -25,21 +37,8 @@ export class ProductoCrear {
 
     if (!usuario) {
       this.router.navigate(['/login']);
-      return;
     }
   }
-
-  producto = {
-    nombre: '',
-    descripcion: '',
-    clasificacion: '',
-    precio: 0,
-    usuario_id: 0,
-    imagenes: [] as ProductoImagen[]
-  };
-
-  formError = '';
-  submitting = false;
 
   guardar() {
     const usuario = this.authService.usuarioLogueado();
@@ -78,7 +77,7 @@ export class ProductoCrear {
         this.submitting = false;
         this.formError = 'Error al crear el producto';
         console.error(err);
-      }
+      },
     });
   }
 

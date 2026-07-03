@@ -1,10 +1,10 @@
 <div class="bg-white rounded-xl shadow-md p-5 border border-gray-200 hover:shadow-lg transition mb-4">
-  <div class="flex justify-between items-start mb-3">
+  <div class="flex justify-between items-start mb-3 gap-3">
     <h2 class="text-xl font-semibold text-gray-800">
       Pedido #{{ pedido().id }}
     </h2>
 
-    <span class="bg-blue-100 text-blue-700 text-xs font-medium px-2 py-1 rounded-full">
+    <span class="text-xs font-medium px-2 py-1 rounded-full" [class]="estadoClase()">
       {{ pedido().estado }}
     </span>
   </div>
@@ -14,7 +14,10 @@
   </p>
 
   @if (pedido().productos.length === 0) {
-    <p class="text-gray-500 py-4">No hay productos para mostrar.</p>
+    <div class="text-center text-gray-500 py-8">
+      <i class="pi pi-shopping-cart text-3xl block mb-2"></i>
+      <p>No hay productos para mostrar.</p>
+    </div>
   } @else {
     <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       @for (producto of pedido().productos; track producto.id) {
@@ -35,9 +38,7 @@
               {{ producto.nombre }}
             </h3>
 
-            <span
-              class="bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap"
-            >
+            <span class="bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded-full whitespace-nowrap">
               Cantidad: {{ producto.cantidad }}
             </span>
           </div>
@@ -56,12 +57,14 @@
                 <button
                   type="button"
                   class="bg-gray-200 hover:bg-gray-300 text-gray-800 h-8 w-8 rounded transition"
+                  aria-label="Restar cantidad"
                   (click)="decrementarCantidad.emit(producto)">
                   -
                 </button>
                 <button
                   type="button"
                   class="bg-gray-200 hover:bg-gray-300 text-gray-800 h-8 w-8 rounded transition"
+                  aria-label="Sumar cantidad"
                   (click)="incrementarCantidad.emit(producto)">
                   +
                 </button>

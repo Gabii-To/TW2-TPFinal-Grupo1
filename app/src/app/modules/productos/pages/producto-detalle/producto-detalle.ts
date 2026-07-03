@@ -1,20 +1,17 @@
 import { Component, signal } from '@angular/core';
-import { ProductoService } from '../../../../services/productos/producto-service';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Producto, ProductoImagen } from '../../interfaces/producto.interface';
 import { CurrencyPipe } from '@angular/common';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../services/auth/auth-service';
+import { ProductoService } from '../../../../services/productos/producto-service';
+import { Producto, ProductoImagen } from '../../interfaces/producto.interface';
 
 @Component({
   selector: 'app-producto-detalle',
+  standalone: true,
   templateUrl: './producto-detalle.html',
-  imports: [
-    CurrencyPipe,
-    RouterLink
-  ]
+  imports: [CurrencyPipe, RouterLink],
 })
 export class ProductoDetalle {
-
   producto = signal<Producto | null>(null);
   imagenActualIndex = signal(0);
 
@@ -28,7 +25,7 @@ export class ProductoDetalle {
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
 
-    this.productoService.verProducto(id).subscribe(producto => {
+    this.productoService.verProducto(id).subscribe((producto) => {
       if (!producto) {
         this.router.navigate(['/productos']);
         return;
@@ -57,7 +54,7 @@ export class ProductoDetalle {
       },
       error: (err) => {
         console.error('Error al agregar el producto al carrito:', err);
-      }
+      },
     });
   }
 
