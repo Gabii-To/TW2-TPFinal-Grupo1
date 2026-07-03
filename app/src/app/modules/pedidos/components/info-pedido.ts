@@ -17,7 +17,7 @@ export class InfoPedido {
   incrementarCantidad = output<PedidoProducto>();
   decrementarCantidad = output<PedidoProducto>();
   quitarProducto = output<PedidoProducto>();
-  pagarPedido = output<Pedido>();
+  iniciarPago = output<Pedido>();
   cancelarPedido = output<Pedido>();
 
   EstadoPedido = EstadoPedido;

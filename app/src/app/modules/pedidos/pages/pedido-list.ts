@@ -49,13 +49,15 @@ export class PedidoList {
       this.router.navigate(['/login']);
       return;
     }
+    localStorage.setItem('pedidoPago', pedido.id.toString());
 
-    this.pedidoService.pagarPedido(usuario.id, pedido.id).subscribe({
-      next: () => {
-        this.obtenerPedidos();
+    this.pedidoService.iniciarPago(usuario.id, pedido.id).subscribe({
+      next: (respuesta) => {
+        window.location.href = respuesta.init_point;
       },
       error: (err) => {
-        console.error('Error al pagar pedido:', err);
+        console.log(err);
+        console.log(err.error);
       }
     });
   }

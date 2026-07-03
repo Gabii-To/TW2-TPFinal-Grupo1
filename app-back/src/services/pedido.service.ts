@@ -1,12 +1,14 @@
 import { PedidoRepository } from '../repository/pedido.repository.js';
 import { ProductoService } from './producto.service.js';
 import { EstadoPedido } from '../models/estado-pedido.model.js';
+import type {MercadopagoService} from "./mercadopago.service.js";
 
 export class PedidoService {
 
     constructor(
         private pedidoRepository: PedidoRepository,
-        private productoService: ProductoService
+        private productoService: ProductoService,
+        private mercadopagoService: MercadopagoService
     ) { }
 
     //CARRITO
@@ -94,6 +96,23 @@ export class PedidoService {
         }
 
         return this.pedidoRepository.actualizarEstado(carrito.id, EstadoPedido.PENDIENTE);
+    }
+
+    async iniciarPago(usuarioId: number, pedidoId: number) {
+        const pedido = await this.pedidoRepository.buscarPorId(pedidoId);
+        if (!pedido || pedido.usuario_id !== usuarioId) throw new Error("Pedido no encontrado");
+
+        if (pedido.estado !== EstadoPedido.PENDIENTE) {
+            throw new Error(`No se puede pagar un pedido en estado "${pedido.estado}"`);
+        }
+
+        const items = pedido.productos.map(item => ({
+            title: item.producto.nombre,
+            quantity: item.cantidad,
+            unit_price: Number(item.precio_unitario)
+        }));
+
+        return await this.mercadopagoService.crearPreferencia(items, pedidoId);
     }
 
     //acá cambia de estado de Pendiente a Pago

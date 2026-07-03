@@ -1,5 +1,5 @@
 export const environment = {
 
-    API_URL : "http://localhost:3000/api"
+    API_URL : "https://high-ruth-respondent-commentary.trycloudflare.com/api"
 
 };

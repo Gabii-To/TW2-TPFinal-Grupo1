@@ -62,6 +62,10 @@
           "defaultConfiguration": "production"
         },
         "serve": {
+          "options": {
+            "allowedHosts":
+            ["accommodations-searches-thesaurus-export.trycloudflare.com"]
+          },
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {

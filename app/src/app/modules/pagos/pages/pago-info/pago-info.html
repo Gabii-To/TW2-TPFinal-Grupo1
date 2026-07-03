@@ -1,0 +1,21 @@
+<div class="p-6 text-center">
+
+  @if (estado === 'success') {
+    <h1 class="text-green-600 text-2xl font-bold">
+      ✔ Pago aprobado
+    </h1>
+  }
+
+  @if (estado === 'failure') {
+    <h1 class="text-red-600 text-2xl font-bold">
+      ❌ Pago rechazado
+    </h1>
+  }
+
+  @if (estado === 'pending') {
+    <h1 class="text-yellow-600 text-2xl font-bold">
+      ⏳ Pago pendiente
+    </h1>
+  }
+
+</div>

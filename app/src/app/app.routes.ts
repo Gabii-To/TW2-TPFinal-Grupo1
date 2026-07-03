@@ -31,6 +31,11 @@ export const routes: Routes = [
     loadChildren: () => import('./modules/usuario/usuario.routes').then(a => a.usuarioRoutes)
   },
   {
+    path: 'pago',
+    loadChildren: () =>
+      import('./modules/pagos/pagos.routes').then(p => p.pagosRoutes)
+  },
+  {
     path: '**',
     redirectTo: ''
   }
