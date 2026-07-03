@@ -42,7 +42,7 @@ model pedido {
   fecha_actualizacion DateTime @updatedAt
   precio_total        Decimal  @db.Decimal(10, 2)
 
-  usuario usuario @relation(fields: [usuario_id], references: [id])
+  usuario usuario @relation(fields: [usuario_id], references: [id], onDelete: Cascade)
   productos producto_pedido[]
 
   @@index([usuario_id], map: "fk_pedido_usuario")
@@ -56,7 +56,7 @@ model producto_pedido {
   cantidad        Int
   subtotal        Decimal @db.Decimal(10, 2)
 
-  producto producto @relation(fields: [producto_id], references: [id])
+  producto producto @relation(fields: [producto_id], references: [id], onDelete: Cascade)
   pedido   pedido   @relation(fields: [pedido_id], references: [id])
 
   @@index([producto_id], map: "fk_producto_pedido_producto")
@@ -78,7 +78,7 @@ model producto {
   precio        Decimal @db.Decimal(10, 2)
   usuario_id    Int
 
-  usuario usuario @relation(fields: [usuario_id], references: [id])
+  usuario usuario @relation(fields: [usuario_id], references: [id], onDelete: Cascade)
   pedidos producto_pedido[]
 
   @@index([usuario_id], map: "fk_producto_usuario")
