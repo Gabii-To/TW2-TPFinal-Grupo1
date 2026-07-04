@@ -2,6 +2,7 @@ import { PedidoService } from '../services/pedido.service.js';
 import { PedidoRepository } from "../repository/pedido.repository.js";
 import { ProductoService } from "../services/producto.service.js";
 import { ProductoRepository } from '../repository/producto.repository.js';
+import { MercadopagoService } from '../services/mercadopago.service.js';
 
 import type { Request, Response } from 'express';
 
@@ -9,7 +10,8 @@ import type { Request, Response } from 'express';
 const productoRepository = new ProductoRepository();
 const productoService = new ProductoService(productoRepository);
 const pedidoRepository = new PedidoRepository();
-const pedidoService = new PedidoService(pedidoRepository, productoService);
+const mercadopagoService = new MercadopagoService();
+const pedidoService = new PedidoService(pedidoRepository, productoService, mercadopagoService);
 
 export class CarritoController {
 
