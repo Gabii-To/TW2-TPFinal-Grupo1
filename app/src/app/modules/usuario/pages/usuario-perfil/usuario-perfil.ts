@@ -2,17 +2,21 @@ import { Component, signal } from '@angular/core';
 import { UsuarioService } from '../../../../services/usuario/usuario-service';
 import { FormsModule } from '@angular/forms';
 import { Usuario } from '../../../auth/interfaces/usuario.interface';
-import {Router} from '@angular/router';
-import {AuthService} from '../../../../services/auth/auth-service';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../../services/auth/auth-service';
+import { Card } from 'primeng/card';
+import { Button } from 'primeng/button';
+import { InputText } from 'primeng/inputtext';
+import { Password } from 'primeng/password';
+import { ProgressSpinner } from 'primeng/progressspinner';
 
 @Component({
   selector: 'app-usuario-perfil',
-  imports: [FormsModule],
+  standalone: true,
+  imports: [FormsModule, Card, Button, InputText, Password, ProgressSpinner],
   templateUrl: './usuario-perfil.html',
-  styleUrl: './usuario-perfil.css',
 })
 export class UsuarioPerfil {
-
   usuario = signal<Usuario | null>(null);
 
   passwordActual = '';
@@ -24,16 +28,13 @@ export class UsuarioPerfil {
   constructor(
     private usuarioService: UsuarioService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit() {
     const usuarioLogueado = this.authService.usuarioLogueado();
 
-    if (!usuarioLogueado) {
-      this.router.navigate(['/login']);
-      return;
-    }
+    if (!usuarioLogueado) return;
 
     this.usuarioService.obtenerUsuario(usuarioLogueado.id).subscribe({
       next: (usuario) => {
@@ -42,7 +43,7 @@ export class UsuarioPerfil {
       },
       error: (err) => {
         console.error(err);
-      }
+      },
     });
   }
 
@@ -51,15 +52,14 @@ export class UsuarioPerfil {
 
     if (!user) return;
 
-    this.usuarioService.editarUsuario(user.id, user)
-      .subscribe({
-        next: () => {
-          alert("Perfil actualizado.");
-        },
-        error: (err) => {
-          console.error(err);
-        }
-      });
+    this.usuarioService.editarUsuario(user.id, user).subscribe({
+      next: () => {
+        alert('Perfil actualizado.');
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
   }
 
   eliminarCuenta() {
@@ -67,22 +67,20 @@ export class UsuarioPerfil {
 
     if (!user) return;
 
-    if (!confirm("¿Seguro que querés eliminar tu cuenta?")) {
+    if (!confirm('¿Seguro que querés eliminar tu cuenta?')) {
       return;
     }
 
-    this.usuarioService.eliminarUsuario(user.id)
-      .subscribe({
-        next: () => {
-          alert("Cuenta eliminada.");
-          this.authService.logout();
-
-          this.router.navigate(['/login']);
-        },
-        error: (err) => {
-          console.error(err);
-        }
-      });
+    this.usuarioService.eliminarUsuario(user.id).subscribe({
+      next: () => {
+        alert('Cuenta eliminada.');
+        this.authService.logout();
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
   }
 
   cambiarPassword(): void {
@@ -91,16 +89,12 @@ export class UsuarioPerfil {
     if (!user) return;
 
     if (this.passwordNuevo !== this.confirmarPassword) {
-      alert("Las contraseñas no coinciden.");
+      alert('Las contraseñas no coinciden.');
       return;
     }
 
     this.usuarioService
-      .cambiarPassword(
-        user.id,
-        this.passwordActual,
-        this.passwordNuevo
-      )
+      .cambiarPassword(user.id, this.passwordActual, this.passwordNuevo)
       .subscribe({
         next: (respuesta: any) => {
           alert(respuesta.message);
@@ -113,7 +107,7 @@ export class UsuarioPerfil {
         },
         error: (error) => {
           alert(error.error.error);
-        }
+        },
       });
   }
 }

@@ -28,7 +28,6 @@ pnpm-debug.log*
 /app-back/dist/
 /app-back/build/
 
-/app-back/prisma/migrations/
 /app-back/prisma/dev.db
 /app-back/*.db
 /app-back/*.sqlite

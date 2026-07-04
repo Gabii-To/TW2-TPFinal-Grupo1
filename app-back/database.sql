@@ -23,6 +23,20 @@ CREATE TABLE producto (
                                    REFERENCES Usuario(id)
 );
 
+CREATE TABLE producto_imagen (
+                                  id INT AUTO_INCREMENT PRIMARY KEY,
+                                  producto_id INT NOT NULL,
+                                  datos LONGTEXT NOT NULL,
+                                  tipo_mime VARCHAR(100) NOT NULL,
+                                  orden INT NOT NULL DEFAULT 0,
+
+                                  INDEX fk_producto_imagen_producto (producto_id),
+                                  CONSTRAINT fk_producto_imagen_producto
+                                      FOREIGN KEY (producto_id)
+                                          REFERENCES producto(id)
+                                          ON DELETE CASCADE
+);
+
 #Password 1234 hasheado
 INSERT INTO usuario (email, password, nombre, apellido, direccion)
 VALUES
@@ -36,14 +50,14 @@ VALUES
     (
         'Notebook Lenovo',
         'Notebook Lenovo IdeaPad 15 pulgadas',
-        'Tecnologia',
+        'Tecnología',
         750000,
         1
     ),
     (
         'Mouse Logitech',
         'Mouse inalámbrico Logitech M170',
-        'Tecnologia',
+        'Tecnología',
         25000,
         1
     ),

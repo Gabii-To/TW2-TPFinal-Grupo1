@@ -4,6 +4,12 @@ export declare class UsuarioController {
     private usuarioService;
     constructor();
     getUsuarios: (req: Request, res: Response) => Promise<void>;
-    createUsuario: (req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>;
+    getUsuarioPorId: (req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>;
+    editarUsuario: (req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>;
+    eliminarUsuario: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+    createUsuario: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+    cambiarPassword: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
+    recuperarClave: (req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>;
+    renovarClave: (req: Request, res: Response) => Promise<Response<any, Record<string, any>>>;
 }
 //# sourceMappingURL=usuario.controller.d.ts.map

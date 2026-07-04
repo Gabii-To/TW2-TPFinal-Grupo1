@@ -1,21 +1,27 @@
-import { Component, signal } from "@angular/core";
-import { Pedido, PedidoProducto } from "../interfaces/pedido.interface";
-import { PedidoService } from "../../../services/pedidos/pedido-service";
-import { AuthService } from "../../../services/auth/auth-service";
-import { InfoPedido } from "../components/info-pedido";
-import { Router } from "@angular/router";
+import { Component, signal } from '@angular/core';
+import { Pedido, PedidoProducto } from '../interfaces/pedido.interface';
+import { PedidoService } from '../../../services/pedidos/pedido-service';
+import { AuthService } from '../../../services/auth/auth-service';
+import { InfoPedido } from '../components/info-pedido';
+import { Router } from '@angular/router';
+import { Button } from 'primeng/button';
+import { ProgressSpinner } from 'primeng/progressspinner';
 
 @Component({
-  selector: "app-carrito-detalle",
-  templateUrl: "./carrito-detalle.html",
-  styleUrl: "./carrito-detalle.css",
-  imports: [InfoPedido]
+  selector: 'app-carrito-detalle',
+  standalone: true,
+  templateUrl: './carrito-detalle.html',
+  imports: [InfoPedido, Button, ProgressSpinner],
 })
 export class CarritoDetalle {
   pedido = signal<Pedido | null>(null);
   cargando = signal(false);
 
-  constructor(private pedidoService: PedidoService, private authService: AuthService, private router: Router) {}
+  constructor(
+    private pedidoService: PedidoService,
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
   ngOnInit() {
     this.obtenerCarrito();
@@ -24,10 +30,7 @@ export class CarritoDetalle {
   obtenerCarrito() {
     const usuario = this.authService.usuarioLogueado();
 
-    if (!usuario) {
-      this.router.navigate(['/login']);
-      return;
-    }
+    if (!usuario) return;
 
     this.cargando.set(true);
     this.pedidoService.obtenerCarrito(usuario.id).subscribe({
@@ -38,7 +41,7 @@ export class CarritoDetalle {
       error: () => {
         this.cargando.set(false);
         this.router.navigate(['/productos']);
-      }
+      },
     });
   }
 
@@ -58,28 +61,24 @@ export class CarritoDetalle {
   actualizarCantidad(producto: PedidoProducto, cantidad: number) {
     const usuario = this.authService.usuarioLogueado();
 
-    if (!usuario) {
-      this.router.navigate(['/login']);
-      return;
-    }
+    if (!usuario) return;
 
-    this.pedidoService.actualizarCantidadProducto(usuario.id, producto.id_producto, cantidad).subscribe({
-      next: (res: Pedido) => {
-        this.pedido.set(res);
-      },
-      error: (err) => {
-        console.error('Error al actualizar cantidad:', err);
-      }
-    });
+    this.pedidoService
+      .actualizarCantidadProducto(usuario.id, producto.id_producto, cantidad)
+      .subscribe({
+        next: (res: Pedido) => {
+          this.pedido.set(res);
+        },
+        error: (err) => {
+          console.error('Error al actualizar cantidad:', err);
+        },
+      });
   }
 
   quitarProducto(producto: PedidoProducto) {
     const usuario = this.authService.usuarioLogueado();
 
-    if (!usuario) {
-      this.router.navigate(['/login']);
-      return;
-    }
+    if (!usuario) return;
 
     this.pedidoService.quitarProducto(usuario.id, producto.id_producto).subscribe({
       next: (res: Pedido) => {
@@ -87,17 +86,14 @@ export class CarritoDetalle {
       },
       error: (err) => {
         console.error('Error al quitar producto:', err);
-      }
+      },
     });
   }
 
   vaciarCarrito() {
     const usuario = this.authService.usuarioLogueado();
 
-    if (!usuario) {
-      this.router.navigate(['/login']);
-      return;
-    }
+    if (!usuario) return;
 
     this.pedidoService.vaciarCarrito(usuario.id).subscribe({
       next: () => {
@@ -105,7 +101,7 @@ export class CarritoDetalle {
       },
       error: (err) => {
         console.error('Error al vaciar el carrito:', err);
-      }
+      },
     });
   }
 
@@ -113,10 +109,7 @@ export class CarritoDetalle {
     const usuario = this.authService.usuarioLogueado();
     const pedido = this.pedido();
 
-    if (!usuario) {
-      this.router.navigate(['/login']);
-      return;
-    }
+    if (!usuario) return;
 
     if (!pedido || pedido.productos.length === 0) {
       return;
@@ -127,8 +120,8 @@ export class CarritoDetalle {
         this.router.navigate(['/pedidos']);
       },
       error: () => {
-        console.error("Error al finalizar la compra");
-      }
+        console.error('Error al finalizar la compra');
+      },
     });
   }
 }

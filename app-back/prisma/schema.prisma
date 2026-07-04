@@ -18,6 +18,20 @@ model usuario {
 
   pedidos   pedido[]
   productos producto[]
+  tokens_recuperacion token_recuperacion[] 
+}
+
+model token_recuperacion {
+  id         Int      @id @default(autoincrement())
+  usuario_id Int
+  token      String   @unique @db.VarChar(255)
+  creado_en  DateTime @default(now())
+  expira_en  DateTime
+  usado      Boolean  @default(false)
+
+  usuario    usuario  @relation(fields: [usuario_id], references: [id], onDelete: Cascade)
+
+  @@index([usuario_id], map: "fk_token_usuario")
 }
 
 model pedido {
@@ -28,7 +42,7 @@ model pedido {
   fecha_actualizacion DateTime @updatedAt
   precio_total        Decimal  @db.Decimal(10, 2)
 
-  usuario usuario @relation(fields: [usuario_id], references: [id])
+  usuario usuario @relation(fields: [usuario_id], references: [id], onDelete: Cascade)
   productos producto_pedido[]
 
   @@index([usuario_id], map: "fk_pedido_usuario")
@@ -42,7 +56,7 @@ model producto_pedido {
   cantidad        Int
   subtotal        Decimal @db.Decimal(10, 2)
 
-  producto producto @relation(fields: [producto_id], references: [id])
+  producto producto @relation(fields: [producto_id], references: [id], onDelete: Cascade)
   pedido   pedido   @relation(fields: [pedido_id], references: [id])
 
   @@index([producto_id], map: "fk_producto_pedido_producto")
@@ -64,8 +78,21 @@ model producto {
   precio        Decimal @db.Decimal(10, 2)
   usuario_id    Int
 
-  usuario usuario @relation(fields: [usuario_id], references: [id])
-  pedidos producto_pedido[]
+  usuario  usuario @relation(fields: [usuario_id], references: [id], onDelete: Cascade)
+  pedidos  producto_pedido[]
+  imagenes producto_imagen[]
 
   @@index([usuario_id], map: "fk_producto_usuario")
+}
+
+model producto_imagen {
+  id          Int    @id @default(autoincrement())
+  producto_id Int
+  datos       String @db.LongText
+  tipo_mime   String @db.VarChar(100)
+  orden       Int    @default(0)
+
+  producto producto @relation(fields: [producto_id], references: [id], onDelete: Cascade)
+
+  @@index([producto_id], map: "fk_producto_imagen_producto")
 }

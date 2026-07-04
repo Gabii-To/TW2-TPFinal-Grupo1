@@ -28,7 +28,7 @@ export class ProductoController {
     };
     createProducto = async (req, res) => {
         try {
-            const { nombre, descripcion, clasificacion, precio, usuario_id } = req.body;
+            const { nombre, descripcion, clasificacion, precio, usuario_id, imagenes = [] } = req.body;
             if (!nombre ||
                 !descripcion ||
                 !clasificacion ||
@@ -38,12 +38,18 @@ export class ProductoController {
                     error: "Faltan datos obligatorios"
                 });
             }
+            if (!Array.isArray(imagenes)) {
+                return res.status(400).json({
+                    error: "Las imágenes deben enviarse en un arreglo"
+                });
+            }
             const producto = await this.productoService.crearProducto({
                 nombre,
                 descripcion,
                 clasificacion,
                 precio: Number(precio),
-                usuario_id: Number(usuario_id)
+                usuario_id: Number(usuario_id),
+                imagenes
             });
             return res.status(201).json(producto);
         }

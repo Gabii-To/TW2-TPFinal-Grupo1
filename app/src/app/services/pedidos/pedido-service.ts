@@ -93,6 +93,7 @@ export class PedidoService {
         precio: Number(item.precio_unitario),
         cantidad: item.cantidad,
         subtotal: Number(item.subtotal),
+        imagenPrincipal: item.producto.imagenes?.[0],
       })),
     };
   }

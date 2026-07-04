@@ -1,4 +1,4 @@
-import { Producto } from '../../productos/interfaces/producto.interface';
+import { Producto, ProductoImagen } from '../../productos/interfaces/producto.interface';
 
 export interface PedidoProducto {
   id: number;
@@ -9,6 +9,7 @@ export interface PedidoProducto {
   precio: number;
   cantidad: number;
   subtotal: number;
+  imagenPrincipal?: ProductoImagen;
 }
 
 export interface Pedido {

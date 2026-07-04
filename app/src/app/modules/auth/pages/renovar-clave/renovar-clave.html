@@ -1,0 +1,31 @@
+<div class="auth-page">
+  <p-card styleClass="auth-card-wide">
+    <ng-template #header>
+      <div class="auth-header">
+        <i class="pi pi-refresh auth-icon"></i>
+        <h1>Restablecer Contraseña</h1>
+      </div>
+    </ng-template>
+
+    <form [formGroup]="renovarClaveForm" (ngSubmit)="onSubmit()" class="space-y-4">
+      <div class="field">
+        <label for="password" class="block text-sm font-medium text-slate-700 mb-1">Nueva Contraseña *</label>
+        <p-password inputId="password" formControlName="password" placeholder="*********" [toggleMask]="true" feedback="false" styleClass="w-full"></p-password>
+        @if (renovarClaveForm.get('password')?.invalid && renovarClaveForm.get('password')?.touched) {
+          <div class="text-red-500 text-sm mt-1.5 space-y-1">
+            @if (renovarClaveForm.get('password')?.errors?.['required']) {
+              <p>La contraseña es obligatoria.</p>
+            } @else if (renovarClaveForm.get('password')?.errors?.['minlength']) {
+              <p>La contraseña debe tener al menos 8 caracteres.</p>
+            } @else if (renovarClaveForm.get('password')?.errors?.['pattern']) {
+              <p>Debe incluir una mayúscula, una minúscula, un número y un carácter especial.</p>
+            }
+          </div>
+        }
+      </div>
+
+      <p-button type="submit" label="Actualizar Contraseña" [disabled]="renovarClaveForm.invalid" styleClass="w-full p-button-success"></p-button>
+    </form>
+  </p-card>
+</div>
+

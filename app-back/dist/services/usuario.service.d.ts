@@ -19,5 +19,38 @@ export declare class UsuarioService {
     }>;
     private passwordValida;
     private ocultarPassword;
+    getDatosDeUsuario(id: number): Promise<{
+        id: number;
+        email: string;
+        nombre: string;
+        apellido: string;
+        direccion: string;
+    } | null>;
+    editarUsuario(id: number, data: {
+        email: string;
+        nombre: string;
+        apellido: string;
+        direccion: string;
+    }): Promise<{
+        id: number;
+        email: string;
+        nombre: string;
+        apellido: string;
+        direccion: string;
+    } | null>;
+    eliminarUsuario(id: number): Promise<{
+        id: number;
+        email: string;
+        nombre: string;
+        apellido: string;
+        direccion: string;
+    } | null>;
+    cambiarPassword(id: number, passwordActual: string, passwordNueva: string): Promise<{
+        id: number;
+        email: string;
+        nombre: string;
+        apellido: string;
+        direccion: string;
+    }>;
 }
 //# sourceMappingURL=usuario.service.d.ts.map

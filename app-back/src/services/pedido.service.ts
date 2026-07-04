@@ -14,15 +14,23 @@ export class PedidoService {
     //CARRITO
 
     async obtenerCarrito(usuarioId: number) {
-        let carrito = await this.pedidoRepository.buscarCarritoActivo(usuarioId);
+        let carrito = await this.pedidoRepository.buscarCarritoActivo(usuarioId, EstadoPedido.CARRITO);
         if (!carrito) {
-            carrito = await this.pedidoRepository.crearCarrito(usuarioId);
+            carrito = await this.pedidoRepository.crearCarrito({
+                usuario_id: usuarioId,
+                estado: EstadoPedido.CARRITO,
+                precio_total: 0,
+            });
         }
         return carrito;
     }
 
     async crearCarrito(usuarioId: number) {
-        let carrito = await this.pedidoRepository.crearCarrito(usuarioId)
+        let carrito = await this.pedidoRepository.crearCarrito({
+            usuario_id: usuarioId,
+            estado: EstadoPedido.CARRITO,
+            precio_total: 0,
+        })
         return carrito;
     }
 
@@ -32,21 +40,30 @@ export class PedidoService {
         if (!producto) throw new Error('Producto no encontrado');
 
         const itemExistente = await this.pedidoRepository.buscarItem(carrito!.id, productoId);
+        const precioUnitario = Number(producto.precio);
+
         if (itemExistente) {
-            await this.pedidoRepository.actualizarCantidadItem(
-                itemExistente.id,
-                itemExistente.cantidad + cantidad,
-                Number(producto.precio)
-            );
+            const nuevaCantidad = itemExistente.cantidad + cantidad;
+
+            await this.pedidoRepository.actualizarCantidadItem(itemExistente.id, {
+                cantidad: nuevaCantidad,
+                subtotal: this.calcularSubtotal(nuevaCantidad, precioUnitario),
+            });
         } else {
-            await this.pedidoRepository.agregarItem(carrito!.id, productoId, cantidad, Number(producto.precio));
+            await this.pedidoRepository.agregarItem({
+                pedido_id: carrito!.id,
+                producto_id: productoId,
+                cantidad,
+                precio_unitario: precioUnitario,
+                subtotal: this.calcularSubtotal(cantidad, precioUnitario),
+            });
         }
 
         return this.recalcularTotal(carrito!.id);
     }
 
     async quitarProducto(usuarioId: number, productoId: number) {
-        const carrito = await this.pedidoRepository.buscarCarritoActivo(usuarioId);
+        const carrito = await this.pedidoRepository.buscarCarritoActivo(usuarioId, EstadoPedido.CARRITO);
         if (!carrito) {
             throw new Error('No existe un carrito activo')
         } else {
@@ -58,7 +75,7 @@ export class PedidoService {
     async actualizarCantidadProducto(usuarioId: number, productoId: number, cantidad: number) {
         if (cantidad <= 0) throw new Error('La cantidad debe ser mayor a 0');
 
-        const carrito = await this.pedidoRepository.buscarCarritoActivo(usuarioId);
+        const carrito = await this.pedidoRepository.buscarCarritoActivo(usuarioId, EstadoPedido.CARRITO);
         if (!carrito) throw new Error('No existe un carrito activo');
 
         const producto = await this.productoService.obtenerProducto(productoId);
@@ -67,16 +84,17 @@ export class PedidoService {
         const itemExistente = await this.pedidoRepository.buscarItem(carrito.id, productoId);
         if (!itemExistente) throw new Error('El producto no existe en el carrito');
 
-        await this.pedidoRepository.actualizarCantidadItem(
-            itemExistente.id,
+        const precioUnitario = Number(producto.precio);
+
+        await this.pedidoRepository.actualizarCantidadItem(itemExistente.id, {
             cantidad,
-            Number(producto.precio)
-        );
+            subtotal: this.calcularSubtotal(cantidad, precioUnitario),
+        });
 
         return this.recalcularTotal(carrito.id);
     }
     async vaciarCarrito(usuarioId: number) {
-        const carrito = await this.pedidoRepository.buscarCarritoActivo(usuarioId);
+        const carrito = await this.pedidoRepository.buscarCarritoActivo(usuarioId, EstadoPedido.CARRITO);
         if (!carrito) return;
         await this.pedidoRepository.vaciarItems(carrito.id);
         await this.pedidoRepository.actualizarTotal(carrito.id, 0);
@@ -87,11 +105,11 @@ export class PedidoService {
 
     //acá cambia de estado de Carrito a Pendiente (pasa de ser carrito a pedido)
     async confirmarPedido(usuarioId: number) {
-        const carrito = await this.pedidoRepository.buscarCarritoActivo(usuarioId);
+        const carrito = await this.pedidoRepository.buscarCarritoActivo(usuarioId, EstadoPedido.CARRITO);
         if (!carrito) throw new Error('No hay carrito activo');
 
         const carritoCompleto = await this.pedidoRepository.buscarPorId(carrito.id);
-        if (!carritoCompleto || carritoCompleto.productos.length === 0) {
+        if (!carritoCompleto || !carritoCompleto.productos || carritoCompleto.productos.length === 0) {
             throw new Error('No se puede confirmar un carrito vacío');
         }
 
@@ -123,7 +141,7 @@ export class PedidoService {
         if (pedido.estado !== EstadoPedido.PENDIENTE) {
             throw new Error(`No se puede pagar un pedido en estado "${pedido.estado}"`);
         }
-        // Acá habria que integrar la pasarela de pago
+        // Acá habría que integrar la pasarela de pago
         return this.pedidoRepository.actualizarEstado(pedidoId, EstadoPedido.PAGO);
     }
 
@@ -139,7 +157,7 @@ export class PedidoService {
     }
 
     async listarPedidos(usuarioId: number) {
-        return this.pedidoRepository.listarPorUsuario(usuarioId);
+        return this.pedidoRepository.listarPorUsuario(usuarioId, EstadoPedido.CARRITO);
     }
 
     async verPedido(usuarioId: number, pedidoId: number) {
@@ -153,5 +171,9 @@ export class PedidoService {
         const pedido = await this.pedidoRepository.buscarPorId(pedidoId);
         const total = pedido!.productos.reduce((acc, item) => acc + Number(item.subtotal), 0);
         return this.pedidoRepository.actualizarTotal(pedidoId, total);
+    }
+
+    private calcularSubtotal(cantidad: number, precioUnitario: number) {
+        return cantidad * precioUnitario;
     }
 }

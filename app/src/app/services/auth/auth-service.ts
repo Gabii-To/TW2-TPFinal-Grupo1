@@ -47,6 +47,14 @@ export class AuthService {
     );
   }
 
+  recuperarClave(email: string) {
+    return this.http.post(`${environment.API_URL}/usuarios/recuperar-clave`, { email });
+  }
+
+  renovarClave(token: string, password: string) {
+    return this.http.post(`${environment.API_URL}/usuarios/renovar-clave`, { token, password });
+  }
+
   logout() {
     localStorage.removeItem('usuario');
     this.usuarioLogueado.set(null);
