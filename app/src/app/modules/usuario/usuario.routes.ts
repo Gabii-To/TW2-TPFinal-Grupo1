@@ -1,11 +1,9 @@
-import {Routes} from '@angular/router';
-import {UsuarioPerfil} from './pages/usuario-perfil/usuario-perfil';
-import {authGuard} from '../../guards/auth-guard';
+import { Routes } from '@angular/router';
+import { UsuarioPerfil } from './pages/usuario-perfil/usuario-perfil';
 
 export const usuarioRoutes: Routes = [
   {
-    path: "",
+    path: '',
     component: UsuarioPerfil,
-    canActivate: [authGuard]
-  }
+  },
 ];
