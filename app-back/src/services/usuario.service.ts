@@ -4,6 +4,7 @@ import { prisma } from "../prisma.js";
 import type { UsuarioRepository } from "../repository/usuario.repository.js";
 import bcrypt from 'bcrypt';
 import nodemailer from 'nodemailer';
+import env from "env-var";
 
 const transportadorEmail = nodemailer.createTransport({
     service: 'gmail',
@@ -162,8 +163,10 @@ export class UsuarioService {
                 usuario_id: usuario.id
             }
         });
+
+        const front_url = env.get('FRONT_URL').required().asString();
                                                             //renovar-clave
-        const linkRecuperacion = 'http://localhost:4200/auth/renovar-clave/' + token;
+        const linkRecuperacion = `${front_url}/auth/renovar-clave/` + token;
 
         await transportadorEmail.sendMail({
             from:'"Sistema de Recuperación de Clave" <correoparaprueba026@gmail.com>',
